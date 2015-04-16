@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8">
+		<title>lobbymail</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+		<!-- build:css styles/vendor.css -->
+		<!-- bower:css -->
+		<!-- endbower -->
+		<!-- endbuild -->
+
+		<!-- build:css styles/main.css -->
+		<link rel="stylesheet" href="/styles/main.css">
+		<!-- endbuild -->
+
+	</head>
+	<body>
+		<script type="text/x-handlebars" data-template-name='index'>
+			<div class="threads">
+			<h1>Threads</h1>
+			{{# each thread in model }}
+			{{# link-to 'thread' thread tagName="p" }}{{ thread.subject }} ({{ thread.count }}) {{# if thread.hasAttachments }}<span class="attachment-count">{{ thread.attachmentCount }}</span>{{/ if }}{{/ link-to }}
+			{{/ each }}
+			</div>
+			<div class="messages">
+			{{ outlet }}
+			</div>
+		</script>
+		<script type="text/x-handlebars" data-template-name="thread">
+			<h2>Thread <em>{{ model.id }}</em></h2>
+			{{# each message in model.messages }}
+			<article>
+				<header>
+				<p><strong>From</strong> {{# each person in message.from }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
+				<p><strong>To</strong> {{# each person in message.to }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
+				<p><strong>CC</strong> {{# each person in message.cc }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
+				<h3>{{ message.subject }}</h3>
+				</header>
+				<pre>{{ message.body }}</pre>
+				<ul class="attachments">
+				{{# each attachment in message.attachments }}
+				<li><a href="/attachments/{{ message.id }}/{{ attachment }}">{{ attachment }}</a></li>
+				{{/ each }}
+				</ul>
+			</article>
+			{{/ each }}
+			<p>{{# link-to 'index' }}Back{{/ link-to }}</p>
+			{{ outlet }}
+		</script>
+
+		<!-- build:js scripts/vendor.js -->
+		<!-- bower:js -->
+		<script src="/bower_components/jquery/dist/jquery.js"></script>
+		<!-- endbower -->
+		<script src="/bower_components/ember/ember-template-compiler.js"></script>
+		<script src="/bower_components/ember/ember.debug.js"></script>
+		<!-- endbuild -->
+
+		<!-- build:js scripts/main.js -->
+		<script src="/scripts/main.js"></script>
+		<!-- endbuild -->
+</body>
+</html>
