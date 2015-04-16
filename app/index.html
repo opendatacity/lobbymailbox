@@ -22,21 +22,21 @@
 			<div class="threads">
 			<h1>Threads</h1>
 			{{# each thread in model }}
-			{{# link-to 'thread' thread tagName="p" }}{{ thread.subject }} ({{ thread.count }}) {{# if thread.hasAttachments }}<span class="attachment-count">{{ thread.attachmentCount }}</span>{{/ if }}{{/ link-to }}
+			{{# link-to 'thread' thread tagName="p" }}{{ thread.subject }} ({{ thread.unreadCount }}) {{# if thread.hasAttachments }}<span class="attachment-count">{{ thread.attachmentCount }}</span>{{/ if }}{{/ link-to }}
 			{{/ each }}
 			</div>
-			<div class="messages">
 			{{ outlet }}
-			</div>
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			<h2>Thread <em>{{ model.id }}</em></h2>
 			{{# each message in model.messages }}
-			<article>
+			<article {{ action "markAsRead" message on="click" }}>
 				<header>
 				<p><strong>From</strong> {{# each person in message.from }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
 				<p><strong>To</strong> {{# each person in message.to }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
 				<p><strong>CC</strong> {{# each person in message.cc }}{{ person.name }} &lt;{{ person.email }}&gt; {{/ each }}</p>
+				<p>{{ message.date }}</p>
+				<p>Unread? {{message.unread}}</p>
 				<h3>{{ message.subject }}</h3>
 				</header>
 				<pre>{{ message.body }}</pre>
@@ -47,14 +47,13 @@
 				</ul>
 			</article>
 			{{/ each }}
-			<p>{{# link-to 'index' }}Back{{/ link-to }}</p>
 			{{ outlet }}
 		</script>
 
 		<!-- build:js scripts/vendor.js -->
 		<!-- bower:js -->
-		<script src="/bower_components/jquery/dist/jquery.js"></script>
 		<!-- endbower -->
+		<script src="/bower_components/jquery/dist/jquery.js"></script>
 		<script src="/bower_components/ember/ember-template-compiler.js"></script>
 		<script src="/bower_components/ember/ember.debug.js"></script>
 		<!-- endbuild -->
