@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html>
 	<head>
 		<meta charset="utf-8">
 		<title>lobbymail</title>
@@ -19,8 +19,10 @@
 	</head>
 	<body>
 		<script type="text/x-handlebars" data-template-name='index'>
+			<header>
+			<h1>{{ link-to "Lobbymail" "index" }}</h1>
+			</header>
 			<div class="threads">
-			<h1>Threads</h1>
 			{{# each thread in model }}
 			{{# link-to 'thread' thread tagName="p" }}{{ thread.subject }} ({{ thread.unreadCount }}) {{# if thread.hasAttachments }}<span class="attachment-count">{{ thread.attachmentCount }}</span>{{/ if }}{{/ link-to }}
 			{{/ each }}
@@ -28,7 +30,6 @@
 			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
-			<h2>Thread <em>{{ model.id }}</em></h2>
 			{{# each message in model.messages }}
 			<article {{ action "markAsRead" message on="click" }}>
 				<header>
@@ -49,6 +50,9 @@
 			{{/ each }}
 			{{ outlet }}
 		</script>
+		<div id="app-wrapper">
+
+		</div>
 
 		<!-- build:js scripts/vendor.js -->
 		<!-- bower:js -->

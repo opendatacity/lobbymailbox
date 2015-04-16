@@ -19,8 +19,16 @@ function debounce(func, wait, immediate) {
 
 if (!localStorage) localStorage = [];
 
-var App = Ember.Application.create();
+var $appWrapper = $('#app-wrapper');
+var App = Ember.Application.create({ rootElement: $appWrapper, });
 var undefined;
+
+App.ApplicationController = Ember.Controller.extend({
+	updateCurrentPath: function() {
+		var className = this.get('currentPath').split('.').pop();
+		$appWrapper.attr('class', className);
+	}.observes('currentPath')
+}),
 
 App.Thread = Ember.Object.extend({
 	id: null,
