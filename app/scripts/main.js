@@ -17,6 +17,8 @@ function debounce(func, wait, immediate) {
 	};
 }
 
+if (!localStorage) localStorage = [];
+
 var App = Ember.Application.create();
 var undefined;
 
@@ -68,8 +70,16 @@ App.Message = Ember.Object.extend({
 	attachments: null,
 	unread: true,
 
+	unreadStateHasChanged: function () {
+		localStorage['unread'+this.id] = +this.unread;
+	}.observes('unread'),
+
 	init: function () {
 		this.set('date', new Date(this.get('date')));
+		if (localStorage) {
+			var unread = +localStorage['unread'+this.id];
+			if (unread === 0) this.set('unread', false);
+		}
 	},
 });
 
