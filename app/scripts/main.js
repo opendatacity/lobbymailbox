@@ -53,7 +53,7 @@ App.Thread = Ember.Object.extend({
 		if (unreadCount === 0) return 'unread-none';
 		if (unreadCount === this.get('count')) return 'unread-all';
 		return 'unread-some';
-	}.property('unreadClass'),
+	}.property('unreadCount'),
 
 	init: function () {
 		this.set('messages', this.get('messages').sortBy('date'));

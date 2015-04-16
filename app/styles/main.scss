@@ -1,53 +1,141 @@
-body {
-	background: #fafafa;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	color: #333;
-	margin: 0;
-	position: relative;
+@import "normalize";
+@import "icomoon";
+
+$base-accent-color: #07c;
+$base-faded-color: #999;
+$base-link-color: $base-accent-color;
+$base-line-color: #eee;
+
+$light-font-weight: 300;
+
+$sidebar-width: 25rem;
+
+html, body {
+	width: 100;
 	height: 100%;
 }
+body {
+	font: 16px/1.3 "Source Sans Pro", "Myriad Pro", "Helvetica Neue", sans-serif;
+	margin: 0;
+}
+
+a {
+	color: $base-link-color;
+	text-decoration: none;
+	&:visited {
+		color: darken($base-link-color, 15%);
+	}
+}
+
+#app-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+.main-header {
+	padding: 3rem 0 1rem;
+	margin: 0 1.5rem;
+	border-bottom: 1px solid $base-line-color;
+
+	h1 {
+		margin: 0;
+		font-weight: $light-font-weight;
+		a {
+			color: inherit;
+		}
+	}
+}
+.stage {
+	position: absolute;
+	bottom: 0;
+	top: 7em;
+	width: 100%;
+	transition: transform .2s ease;
+}
 .threads, .messages {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	bottom: 0;
 	box-sizing: border-box;
-	padding: .5em;
-	height: 100vh;
+	padding: 0 1.5rem;
 	overflow: auto;
+	-webkit-overflow-scrolling: touch;
 }
 .threads {
-	position: absolute;
 	left: 0;
-	top: 0;
-	width: 20%;
-	background-color: #eee;
-	p {
-		padding: .5em;
-		margin: 0 #{-.5em};
+}
+.messages {
+	left: 100%;
+}
+.index .stage {
+	transform: translateX(0);
+}
+.thread .stage {
+	transform: translateX(-100%);
+}
+@media (min-width: 2 * $sidebar-width) {
+	.stage {
+		transition: none;
+	}
+	.index .stage, .thread .stage {
+		transform: none;
+	}
+	.threads {
+		left: 0;
+		width: $sidebar-width;
+	}
+	.messages {
+		left: $sidebar-width;
+	}
+}
+
+.threads {
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+	li {
+		font-weight: $light-font-weight;
+		padding: .5rem;
+		margin: 0 #{-.5rem};
 		cursor: pointer;
+		&.active {
+			color: $base-accent-color;
+			.author {
+				color: rgba($base-accent-color, .6);
+			}
+		}
 		&.active, &:hover {
-			background-color: rgba(#000, .1);
-		}
-		&:active {
-			background-color: rgba(#000, .2);
-		}
-		.attachment-count {
-			float: right;
 
 		}
 	}
-}
-.messages {
-	position: absolute;
-	left: 20%;
-	top: 0;
-	right: 0;
-	article {
+	p {
+		margin: 0;
 	}
-	article + article {
-		margin-top: 3em;
-		padding-top: 3em;
-		border-top: 1px solid #ccc;
+	.author {
+		color: $base-faded-color;
+		font-size: .9em;
+		.affiliation {
+			text-transform: uppercase;
+			margin-left: .5em;
+			font-size: .8em;
+			letter-spacing: .05em;
+			font-weight: normal;
+		}
 	}
-}
-pre {
-	font: inherit;
-	white-space: pre-wrap;
+	.subject:before {
+		// Icon styling
+		color: $base-accent-color;
+		font-size: .8em;
+		float: left;
+		margin-top: .3em;
+		margin-left: -1.3em;
+	}
+	.unread-all .subject {
+		@extend %icon-circle;
+	}
+	.unread-some .subject {
+		@extend %icon-circle-o;
+	}
 }
