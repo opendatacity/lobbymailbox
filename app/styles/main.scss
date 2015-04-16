@@ -1,21 +1,32 @@
 @import "normalize";
 @import "icomoon";
 
+$base-font-color: #222;
 $base-accent-color: #07c;
 $base-faded-color: #999;
 $base-link-color: $base-accent-color;
 $base-line-color: #eee;
+$base-accent-background-color: #e4e9ea;
 
 $light-font-weight: 300;
 
 $sidebar-width: 25rem;
+$two-col-breakpoint: 2 * $sidebar-width;
+
+%all-small-caps {
+	text-transform: uppercase;
+	margin-left: .5em;
+	font-size: .8em;
+	letter-spacing: .05em;
+	font-weight: normal;
+}
 
 html, body {
 	width: 100;
 	height: 100%;
 }
 body {
-	font: 16px/1.3 "Source Sans Pro", "Myriad Pro", "Helvetica Neue", sans-serif;
+	font: 16px/1.35 "Source Sans Pro", "Myriad Pro", "Helvetica Neue", sans-serif;
 	margin: 0;
 }
 
@@ -26,23 +37,56 @@ a {
 		color: darken($base-link-color, 15%);
 	}
 }
+dl {
+	dd, dt {
+		margin: 0;
+	}
+	dt {
+		@extend %all-small-caps;
+		opacity: .8;
+		user-select: none;
+		cursor: default;
+	}
+	dd {
+	}
+}
 
 #app-wrapper {
 	position: relative;
+	max-width: 70rem;
 	width: 100%;
 	height: 100%;
+	margin: 0 auto;
 }
 .main-header {
 	padding: 3rem 0 1rem;
 	margin: 0 1.5rem;
 	border-bottom: 1px solid $base-line-color;
+	user-select: none;
 
 	h1 {
 		margin: 0;
 		font-weight: $light-font-weight;
 		a {
 			color: inherit;
+			&:before {
+				transition: all .2s ease;
+				display: inline-block;
+				content: "〈";
+				font-size: .8em;
+				width: 1.5em;
+				height: 1em;
+				overflow: hidden;
+				margin-left: -1.5em;
+				opacity: 0;
+			}
 		}
+	}
+}
+.thread .main-header h1 a {
+	&:before {
+		opacity: 1;
+		margin-left: -.5em;
 	}
 }
 .stage {
@@ -64,9 +108,13 @@ a {
 }
 .threads {
 	left: 0;
+	z-index: 2;
+	transition: opacity .2s ease;
+	user-select: none;
 }
 .messages {
 	left: 100%;
+	z-index: 1;
 }
 .index .stage {
 	transform: translateX(0);
@@ -74,7 +122,15 @@ a {
 .thread .stage {
 	transform: translateX(-100%);
 }
-@media (min-width: 2 * $sidebar-width) {
+.thread {
+	.threads {
+		opacity: .3;
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+@media (min-width: $two-col-breakpoint) {
 	.stage {
 		transition: none;
 	}
@@ -86,7 +142,12 @@ a {
 		width: $sidebar-width;
 	}
 	.messages {
-		left: $sidebar-width;
+		padding-left: $sidebar-width + 1.5rem;
+		left: 0;
+		right: 0;
+	}
+	.main-header h1 a:before {
+		display: none;
 	}
 }
 
@@ -97,8 +158,8 @@ a {
 	}
 	li {
 		font-weight: $light-font-weight;
-		padding: .5rem;
-		margin: 0 #{-.5rem};
+		padding: .5rem 1.5rem;
+		margin: 0 #{-1.5rem};
 		cursor: pointer;
 		&.active {
 			color: $base-accent-color;
@@ -107,35 +168,95 @@ a {
 			}
 		}
 		&.active, &:hover {
-
+			background-color: $base-accent-background-color;
+		}
+		&:active {
+			background-color: darken($base-accent-background-color, 5%);
 		}
 	}
 	p {
 		margin: 0;
 	}
+	.has-attachments .subject:after {
+		@extend %icon-attachment;
+		opacity: .5;
+		margin-left: .5em;
+		font-size: .7em;
+	}
 	.author {
 		color: $base-faded-color;
 		font-size: .9em;
 		.affiliation {
-			text-transform: uppercase;
-			margin-left: .5em;
-			font-size: .8em;
-			letter-spacing: .05em;
-			font-weight: normal;
+			@extend %all-small-caps;
 		}
 	}
-	.subject:before {
-		// Icon styling
-		color: $base-accent-color;
-		font-size: .8em;
-		float: left;
-		margin-top: .3em;
-		margin-left: -1.3em;
+}
+.subject:before {
+	// Icon styling
+	color: $base-accent-color;
+	font-size: .8em;
+	float: left;
+	margin-top: .3em;
+	margin-left: -1.3em;
+}
+.unread-all .subject:before,
+.unread .subject:before {
+	@extend %icon-circle;
+}
+.unread-some .subject:before {
+	@extend %icon-circle-o;
+}
+/*ul*/.people {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	li {
+		margin-bottom: .5em;
 	}
-	.unread-all .subject {
-		@extend %icon-circle;
+	span {
+		white-space: nowrap;
 	}
-	.unread-some .subject {
-		@extend %icon-circle-o;
+	.name {
+		margin-right: .5em;
+	}
+	.email {
+		font-weight: $light-font-weight;
+	}
+}
+.message {
+	margin-bottom: 6rem;
+	header {
+		color: $base-faded-color;
+		@media (min-width: $two-col-breakpoint) {
+			.from, .to, .cc {
+				width: 49%;
+			}
+			.from {
+				float: left;
+			}
+			.to, .cc {
+				float: right;
+			}
+			.cc, .subject-block {
+				clear: both;
+			}
+		}
+	}
+	h2 {
+		font-weight: normal;
+		color: $base-font-color;
+		margin: 0;
+		font-size: 1.4em;
+		font-weight: $light-font-weight;
+	}
+	pre {
+		white-space: pre-wrap;
+		font: inherit;
+	}
+	.attachments {
+		margin: 3em 0 0;
+	}
+	+ .message {
+		border-top: 5px solid $base-line-color;
 	}
 }

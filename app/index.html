@@ -27,7 +27,7 @@
 				<ul>
 				{{# each thread in model }}
 				{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" }}
-					<p class="author">Manfred Mustermann <span class="affiliation">Böhse AG</span></p>
+					<p class="author">{{ thread.initiator.name }} <span class="affiliation">{{ thread.initiator.affiliation }}</span></p>
 					<p class="subject">{{ thread.subject }}</p>
 				{{/ link-to }}
 				{{/ each }}
@@ -38,33 +38,42 @@
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			{{# each message in model.messages }}
-			<article {{ action "markAsRead" message on="click" }}>
+			<article class="message {{ if message.unread 'unread' }}" {{ action "markAsRead" message on="click" }}>
 				<header>
+					{{# if message.from }}
 					<dl class="from">
 						<dt>Von</dt>
 						<dd>{{ render "person-list" message.from }}</dd>
 					</dl>
+					{{/ if }}
+					{{# if message.from }}
 					<dl class="to">
 						<dt>An</dt>
 						<dd>{{ render "person-list" message.to }}</dd>
 					</dl>
+					{{/ if }}
+					{{# if message.cc }}
 					<dl class="cc">
 						<dt>CC</dt>
 						<dd>{{ render "person-list" message.cc }}</dd>
 					</dl>
+					{{/ if }}
 
-					<dl class="subject">
+					<dl class="subject-block">
 						<dt>Betreff</dt>
-						<dd><h3>{{ message.subject }}</h3></dd>
+						<dd><h2 class="subject">{{ message.subject }}</h2></dd>
 					</dl>
-					<p class="date">{{ message.date }}</p>
+					<p class="date">{{ date message.date }}</p>
 				</header>
 				<pre class="body">{{ message.body }}</pre>
-				<ul class="attachments">
+				{{# if message.attachments }}
+				<dl class="attachments">
+					<dt>Anhänge</dt>
 					{{# each attachment in message.attachments }}
-					<li><a href="/attachments/{{ message.id }}/{{ attachment }}">{{ attachment }}</a></li>
+					<dd><a href="/attachments/{{ message.id }}/{{ attachment }}">{{ attachment }}</a></dd>
 					{{/ each }}
-				</ul>
+				</dl>
+				{{/ if }}
 			</article>
 			{{/ each }}
 			{{ outlet }}
@@ -72,7 +81,7 @@
 		<script type="text/x-handlebars" data-template-name="person-list">
 		<ul class="people">
 			{{# each person in model }}
-			<li><span class="name">{{ person.name }}</span><span class="email">{{ person.email }}</span></li>
+			<li><span class="name">{{ person.name }}</span> <span class="email">{{ person.email }}</span></li>
 			{{/ each }}
 		</ul>
 		</script>
@@ -81,9 +90,8 @@
 		</div>
 
 		<!-- build:js scripts/vendor.js -->
-		<!-- bower:js -->
-		<!-- endbower -->
 		<script src="/bower_components/jquery/dist/jquery.js"></script>
+		<script src="/bower_components/fastclick/lib/fastclick.js"></script>
 		<script src="/bower_components/ember/ember-template-compiler.js"></script>
 		<script src="/bower_components/ember/ember.debug.js"></script>
 		<!-- endbuild -->

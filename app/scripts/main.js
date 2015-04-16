@@ -17,6 +17,8 @@ function debounce(func, wait, immediate) {
 	};
 }
 
+FastClick.attach(document.body);
+
 if (!localStorage) localStorage = [];
 
 var $appWrapper = $('#app-wrapper');
@@ -37,7 +39,9 @@ App.Thread = Ember.Object.extend({
 		return this.get('messages').length;
 	}.property('messages'),
 	attachmentCount: function () {
-		return this.get('messages').get('lastObject').get('attachments').length;
+		var attachments = this.get('messages').get('lastObject').get('attachments');
+		if (!attachments) return 0;
+		return attachments.length;
 	}.property('messages'),
 	hasAttachments: function () {
 		return !!this.get('attachmentCount');
@@ -54,6 +58,13 @@ App.Thread = Ember.Object.extend({
 		if (unreadCount === this.get('count')) return 'unread-all';
 		return 'unread-some';
 	}.property('unreadCount'),
+	initiator: function () {
+		var person = this.get('messages').get('firstObject').get('from')[0];
+		var r = { name: person.name };
+		if (!person.name) r.name = person.email;
+		if (person.email) r.affiliation = person.email.match(/@(.*?)\./)[1];
+		return r;
+	}.property('messages'),
 
 	init: function () {
 		this.set('messages', this.get('messages').sortBy('date'));
@@ -77,6 +88,7 @@ App.Message = Ember.Object.extend({
 	date: null,
 	attachments: null,
 	unread: true,
+	body: null,
 
 	unreadStateHasChanged: function () {
 		localStorage['unread'+this.id] = +this.unread;
@@ -84,10 +96,15 @@ App.Message = Ember.Object.extend({
 
 	init: function () {
 		this.set('date', new Date(this.get('date')));
+		this.set('body', this.get('body').replace(/\n{3,}/g, '\n\n'));
 		if (localStorage) {
 			var unread = +localStorage['unread'+this.id];
 			if (unread === 0) this.set('unread', false);
-		}
+		};
+		if (this.from && this.from.length === 0) this.set('from', null);
+		if (this.to && this.to.length === 0) this.set('to', null);
+		if (this.cc && this.cc.length === 0) this.set('cc', null);
+		if (this.attachments && this.attachments.length === 0) this.set('attachments', null);
 	},
 });
 
@@ -131,7 +148,7 @@ App.Scrolling = Ember.Mixin.create({
 	bindScrolling: function() {
 		var onScroll, me = this;
 
-		onScroll = debounce(function() { return me.scrolled(); }, 100);
+		onScroll = debounce(function() { return me.scrolled(); }, 100, true);
 		$(this.element).bind('touchmove', onScroll);
 		$(this.element).bind('scroll', onScroll);
 	},
@@ -166,6 +183,22 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 			}
 		});
 	},
+});
+
+var months = 'Januar Februar März April Mai Juni Juli August September Oktober November Dezember'.split(' ');
+function zerofill (n, len) {
+	n = ''+n;
+	while (n.length < len) {
+		n = '0'+n;
+	}
+	return n;
+}
+Ember.Handlebars.helper('date', function(date) {
+	date = new Date(date);
+	return new Ember.Handlebars.SafeString(
+		date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' +
+		zerofill(date.getHours(), 2) + ':' + zerofill(date.getMinutes(), 2)
+	);
 });
 
 });

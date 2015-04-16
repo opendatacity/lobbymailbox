@@ -24,23 +24,17 @@
 }
 
 %icon-circle-o {
-	&:before {
-		@extend %icon;
-		content: "\e600";
-	}
+	@extend %icon;
+	content: "\e600";
 }
 
 %icon-circle {
-	&:before {
-		@extend %icon;
-		content: "\e601";
-	}
+	@extend %icon;
+	content: "\e601";
 }
 
 %icon-attachment {
-	&:before {
-		@extend %icon;
-		content: "\e9cd";
-	}
+	@extend %icon;
+	content: "\e9cd";
 }
 
