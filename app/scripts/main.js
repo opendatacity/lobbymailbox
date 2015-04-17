@@ -1,6 +1,6 @@
 $.getJSON('/data/threads.json').then(function (data) {
 'use strict';
-/* global Ember */
+/* global Ember, FastClick */
 
 function debounce(func, wait, immediate) {
 	var timeout;
@@ -19,11 +19,11 @@ function debounce(func, wait, immediate) {
 
 FastClick.attach(document.body);
 
-if (!localStorage) localStorage = [];
+if (!localStorage) localStorage = []; /* jshint ignore:line */
 
 var $appWrapper = $('#app-wrapper');
 var App = Ember.Application.create({ rootElement: $appWrapper, });
-var undefined;
+var undefined; /* jshint ignore:line */
 
 App.ApplicationController = Ember.Controller.extend({
 	updateCurrentPath: function() {
@@ -40,7 +40,7 @@ App.Thread = Ember.Object.extend({
 	}.property('messages'),
 	attachmentCount: function () {
 		return this.get('messages').reduce(function (sum, message) {
-			return sum + message.get('attachmentCount')
+			return sum + message.get('attachmentCount');
 		}, 0);
 	}.property('messages.@each.attachmentCount'),
 	hasAttachments: function () {
@@ -66,8 +66,6 @@ App.Thread = Ember.Object.extend({
 		return r;
 	}.property('messages'),
 	description: function () {
-		var description = [];
-		var unreadCount = this.get('unreadCount');
 		return pluralHelper(this.get('unreadCount'), {
 			0: 'Keine ungelesenen Nachrichten',
 			1: '1 ungelesene Nachricht',
@@ -119,7 +117,7 @@ App.Message = Ember.Object.extend({
 		if (localStorage) {
 			var unread = +localStorage['unread'+this.id];
 			if (unread === 0) this.set('unread', false);
-		};
+		}
 		if (this.from && this.from.length === 0) this.set('from', null);
 		if (this.to && this.to.length === 0) this.set('to', null);
 		if (this.cc && this.cc.length === 0) this.set('cc', null);
