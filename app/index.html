@@ -26,19 +26,22 @@
 				<nav class="threads">
 				<ul>
 				{{# each thread in model }}
-				{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" }}
+				{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" title=thread.description }}
 					<p class="author">{{ thread.initiator.name }} <span class="affiliation">{{ thread.initiator.affiliation }}</span></p>
 					<p class="subject">{{ thread.subject }}</p>
 				{{/ link-to }}
 				{{/ each }}
 				</ul>
 				</nav>
+				<div class="messages messages-placeholder">
+				<p>Bitte wählen Sie<br>einen Nachrichtenverlauf aus.</p>
+				</div>
 				{{ outlet }}
 			</div>
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			{{# each message in model.messages }}
-			<article class="message {{ if message.unread 'unread' }}" {{ action "markAsRead" message on="click" }}>
+			<article id="message-{{ message.id }}" class="message {{ if message.unread 'unread' }}" {{ action "markAsRead" message on="click" }}>
 				<header>
 					{{# if message.from }}
 					<dl class="from">
@@ -68,7 +71,7 @@
 				<pre class="body">{{ message.body }}</pre>
 				{{# if message.attachments }}
 				<dl class="attachments">
-					<dt>Anhänge</dt>
+					<dt>{{ plural message.attachmentCount 1="Anhang" default="Anhänge" }}</dt>
 					{{# each attachment in message.attachments }}
 					<dd><a href="/attachments/{{ message.id }}/{{ attachment }}">{{ attachment }}</a></dd>
 					{{/ each }}

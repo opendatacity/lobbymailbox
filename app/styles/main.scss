@@ -3,10 +3,13 @@
 
 $base-font-color: #222;
 $base-accent-color: #07c;
-$base-faded-color: #999;
+$base-faded-color: #aaa;
 $base-link-color: $base-accent-color;
 $base-line-color: #eee;
 $base-accent-background-color: #e4e9ea;
+
+$base-background-color: #fff;
+$faded-background-color: darken($base-background-color, 3%);
 
 $light-font-weight: 300;
 
@@ -28,6 +31,7 @@ html, body {
 body {
 	font: 16px/1.35 "Source Sans Pro", "Myriad Pro", "Helvetica Neue", sans-serif;
 	margin: 0;
+	background-color: $base-background-color;
 }
 
 a {
@@ -104,8 +108,8 @@ dl {
 	box-sizing: border-box;
 	padding: 0 1.5rem;
 	overflow: auto;
-	-webkit-overflow-scrolling: touch;
-}
+		-webkit-overflow-scrolling: touch;
+	}
 .threads {
 	left: 0;
 	z-index: 2;
@@ -115,6 +119,15 @@ dl {
 .messages {
 	left: 100%;
 	z-index: 1;
+}
+.messages-placeholder {
+	display: none;
+	z-index: 0;
+	font-size: 1.5em;
+	font-weight: $light-font-weight;
+	color: $base-faded-color;
+	cursor: default;
+	user-select: none;
 }
 .index .stage {
 	transform: translateX(0);
@@ -128,6 +141,9 @@ dl {
 		&:hover {
 			opacity: 1;
 		}
+	}
+	.messages-placeholder {
+		display: none;
 	}
 }
 @media (min-width: $two-col-breakpoint) {
@@ -145,6 +161,9 @@ dl {
 		padding-left: $sidebar-width + 1.5rem;
 		left: 0;
 		right: 0;
+	}
+	.messages-placeholder {
+		display: block;
 	}
 	.main-header h1 a:before {
 		display: none;
@@ -224,7 +243,6 @@ dl {
 	}
 }
 .message {
-	margin-bottom: 6rem;
 	header {
 		color: $base-faded-color;
 		@media (min-width: $two-col-breakpoint) {
@@ -257,6 +275,7 @@ dl {
 		margin: 3em 0 0;
 	}
 	+ .message {
+		margin-top: 6rem;
 		border-top: 5px solid $base-line-color;
 	}
 }

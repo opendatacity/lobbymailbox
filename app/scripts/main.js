@@ -39,13 +39,13 @@ App.Thread = Ember.Object.extend({
 		return this.get('messages').length;
 	}.property('messages'),
 	attachmentCount: function () {
-		var attachments = this.get('messages').get('lastObject').get('attachments');
-		if (!attachments) return 0;
-		return attachments.length;
-	}.property('messages'),
+		return this.get('messages').reduce(function (sum, message) {
+			return sum + message.get('attachmentCount')
+		}, 0);
+	}.property('messages.@each.attachmentCount'),
 	hasAttachments: function () {
 		return !!this.get('attachmentCount');
-	}.property('messages'),
+	}.property('attachmentCount'),
 	subject: function () {
 		return this.get('messages').get('lastObject').get('subject').replace(/^(Re|Fwd|AW|WG):\s*/gi, '');
 	}.property('messages'),
@@ -65,6 +65,20 @@ App.Thread = Ember.Object.extend({
 		if (person.email) r.affiliation = person.email.match(/@(.*?)\./)[1];
 		return r;
 	}.property('messages'),
+	description: function () {
+		var description = [];
+		var unreadCount = this.get('unreadCount');
+		return pluralHelper(this.get('unreadCount'), {
+			0: 'Keine ungelesenen Nachrichten',
+			1: '1 ungelesene Nachricht',
+			default: '%d ungelesene Nachrichten',
+		}) +
+		pluralHelper(this.get('attachmentCount'), {
+			0: '',
+			1: '; 1 Dateianhang',
+			default: '; %d Dateianhänge',
+		});
+	}.property('unreadCount'),
 
 	init: function () {
 		this.set('messages', this.get('messages').sortBy('date'));
@@ -89,6 +103,11 @@ App.Message = Ember.Object.extend({
 	attachments: null,
 	unread: true,
 	body: null,
+
+	attachmentCount: function () {
+		if (this.attachments) return this.attachments.length;
+		return 0;
+	}.property('attachments'),
 
 	unreadStateHasChanged: function () {
 		localStorage['unread'+this.id] = +this.unread;
@@ -133,10 +152,13 @@ App.ApplicationRoute = Ember.Route.extend({
 App.ThreadRoute = Ember.Route.extend({
 	model: function (params) {
 		return App.Thread.find(+params.thread_id);
-	}
+	},
+	afterModel: function () {
+		$('.messages').scrollTop(0);
+	},
 });
 
-App.ThreadController = Ember.ObjectController.extend({
+App.ThreadController = Ember.Controller.extend({
 	actions: {
 		markAsRead: function (message) {
 			message.set('unread', false);
@@ -165,7 +187,7 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 	didInsertElement: function () {
 		this.bindScrolling();
 	},
-	willRemoveElement: function () {
+	willDestroyElement: function () {
 		this.unbindScrolling();
 	},
 	scrolled: function () {
@@ -179,6 +201,7 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 			var bottom = top + $article.innerHeight();
 			if (top < targetHeight && bottom > targetHeight) {
 				$article.click();
+				//if (article.id) history.replaceState(null, null, '#'+article.id);
 				return false;
 			}
 		});
@@ -193,12 +216,17 @@ function zerofill (n, len) {
 	}
 	return n;
 }
-Ember.Handlebars.helper('date', function(date) {
+Ember.Handlebars.helper('date', function (date) {
 	date = new Date(date);
 	return new Ember.Handlebars.SafeString(
 		date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' +
 		zerofill(date.getHours(), 2) + ':' + zerofill(date.getMinutes(), 2)
 	);
 });
+function pluralHelper (n, args) {
+	var rules = args.hash? args.hash : args;
+	return ((rules[n] !== undefined)? rules[n] : rules.default).replace(/%d/g, n);
+}
+Ember.Handlebars.helper('plural', pluralHelper);
 
 });
