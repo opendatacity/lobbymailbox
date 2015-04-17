@@ -32,6 +32,29 @@ App.ApplicationController = Ember.Controller.extend({
 	}.observes('currentPath')
 }),
 
+App.Inbox = Ember.Object.extend({
+	threads: null,
+	unreadCount: function () {
+		return this.get('threads').reduce(function (sum, thread) {
+			return sum + thread.get('unreadCount');
+		}, 0);
+	}.property('threads.@each.unreadCount'),
+});
+App.Inbox.reopenClass({
+	find: function () {
+		return App.FIXTURES.inbox;
+	},
+});
+App.Folder = Ember.Object.extend();
+App.Folder.reopenClass({
+	find: function (name) {
+		if (name) {
+			return App.FIXTURES.files.files.findBy('name', name);
+		} else {
+			return App.FIXTURES.files;
+		}
+	},
+});
 App.Thread = Ember.Object.extend({
 	id: null,
 	messages: [],
@@ -85,9 +108,9 @@ App.Thread = Ember.Object.extend({
 App.Thread.reopenClass({
 	find: function (id) {
 		if (id !== undefined) {
-			return App.FIXTURES.findBy('id', id);
+			return App.FIXTURES.inbox.threads.findBy('id', id);
 		} else {
-			return App.FIXTURES;
+			return App.FIXTURES.inbox.threads;
 		}
 	}
 });
@@ -124,17 +147,35 @@ App.Message = Ember.Object.extend({
 		if (this.attachments && this.attachments.length === 0) this.set('attachments', null);
 	},
 });
-
-App.FIXTURES = data.threads.map(function (thread) {
-	thread.messages = thread.messages.map(function (message) {
-		return App.Message.create(message);
-	});
-	return App.Thread.create(thread);
+App.File = Ember.Object.extend({
+	name: null,
 });
+
+App.FIXTURES = {
+	inbox: App.Inbox.create({
+		threads: data.threads.map(function (thread) {
+			thread.messages = thread.messages.map(function (message) {
+				return App.Message.create(message);
+			});
+			return App.Thread.create(thread);
+		}),
+	}),
+	files: App.Folder.create({
+		files: [
+			App.File.create({ name: 'Geheim.pdf' }),
+			App.File.create({ name: 'Bundestrojaner.exe' }),
+		],
+	}),
+};
 
 App.Router.map(function() {
 	this.resource('index', { path: '/'}, function () {
-		this.resource('thread', { path: '/threads/:thread_id' });
+		this.resource('inbox', function () {
+			this.resource('thread', { path: '/:thread_id' });
+		});
+		this.resource('files', function () {
+			this.resource('file', { path: '/:file_name' });
+		});
 	});
 });
 App.Router.reopen({
@@ -143,7 +184,27 @@ App.Router.reopen({
 
 App.ApplicationRoute = Ember.Route.extend({
 	model: function () {
-		return App.Thread.find();
+		return {
+			inbox: App.Inbox.find(),
+		};
+	}
+});
+
+App.InboxRoute = Ember.Route.extend({
+	model: function () {
+		return App.Inbox.find();
+	}
+});
+
+App.FilesRoute = Ember.Route.extend({
+	model: function () {
+		return App.Folder.find();
+	}
+});
+
+App.FileRoute = Ember.Route.extend({
+	model: function (params) {
+		return App.Folder.find(params.file_name);
 	}
 });
 

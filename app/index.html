@@ -21,23 +21,47 @@
 		<script type="text/x-handlebars" data-template-name='index'>
 			<header class="main-header">
 			<h1>{{ link-to "Lobbymail" "index" }}</h1>
+				<nav>
+					<ul>
+						<li>{{# link-to "inbox" }}Posteingang <span class="unread-count">{{ model.inbox.unreadCount }}</span>{{/ link-to }}</li>
+						<li>{{# link-to "files" }}Dokumente{{/ link-to }}</li>
+					</ul>
+				</nav>
 			</header>
 			<div class="stage">
-				<nav class="threads">
-				<ul>
-				{{# each thread in model }}
-				{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" title=thread.description }}
-					<p class="author">{{ thread.initiator.name }} <span class="affiliation">{{ thread.initiator.affiliation }}</span></p>
-					<p class="subject">{{ thread.subject }}</p>
-				{{/ link-to }}
-				{{/ each }}
-				</ul>
-				</nav>
-				<div class="messages messages-placeholder">
-				<p>Bitte wählen Sie<br>einen Nachrichtenverlauf aus.</p>
-				</div>
 				{{ outlet }}
 			</div>
+		</script>
+		<script type="text/x-handlebars" data-template-name='inbox'>
+			<nav class="threads">
+			<ul>
+			{{# each thread in model.threads }}
+			{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" title=thread.description }}
+				<p class="author">{{ thread.initiator.name }} <span class="affiliation">{{ thread.initiator.affiliation }}</span></p>
+				<p class="subject">{{ thread.subject }}</p>
+			{{/ link-to }}
+			{{/ each }}
+			</ul>
+			</nav>
+			<div class="messages messages-placeholder">
+			<p>Bitte wählen Sie<br>einen Nachrichtenverlauf aus.</p>
+			</div>
+			{{ outlet }}
+		</script>
+		<script type="text/x-handlebars" data-template-name="files">
+			<nav class="threads">
+			<ul>
+			{{# each file in model.files }}
+			{{# link-to "file" file.name tagName="li" }}
+				<p class="subject">{{ file.name }}</p>
+			{{/ link-to }}
+			{{/ each }}
+			</ul>
+			</nav>
+			<div class="messages messages-placeholder">
+			<p>Bitte wählen Sie<br>ein Dokument aus.</p>
+			</div>
+			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			{{# each message in model.messages }}
@@ -79,6 +103,10 @@
 				{{/ if }}
 			</article>
 			{{/ each }}
+			{{ outlet }}
+		</script>
+		<script type="text/x-handlebars" data-template-name="file">
+			File: {{ model.name }}
 			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="person-list">

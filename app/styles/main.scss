@@ -67,10 +67,12 @@ dl {
 	margin: 0 1.5rem;
 	border-bottom: 1px solid $base-line-color;
 	user-select: none;
+	cursor: default;
 
 	h1 {
 		margin: 0;
 		font-weight: $light-font-weight;
+		display: inline-block;
 		a {
 			color: inherit;
 			&:before {
@@ -84,6 +86,45 @@ dl {
 				margin-left: -1.5em;
 				opacity: 0;
 			}
+		}
+	}
+
+	nav {
+		display: inline-block;
+		ul {
+			display: inline-block;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		li {
+			display: inline-block;
+			margin-left: 1em;
+		}
+		a {
+			display: inline-block;
+			padding: .5rem 0 1.3rem;
+			margin-bottom: -1.3rem;
+			color: $base-font-color;
+		}
+		.active, a:active {
+			color: $base-accent-color;
+			.unread-count {
+				background-color: $base-accent-color;
+				color: $base-background-color;
+				border-color: $base-accent-color;
+			}
+		}
+		.active {
+			border-bottom: 2px solid $base-accent-color;
+		}
+		.unread-count {
+			font-size: .6em;
+			padding: .2em .6em;
+			border-radius: 1.4em;
+			background-color: $base-background-color;
+			border: 1px solid $base-faded-color;
+			color: $base-faded-color;
 		}
 	}
 }
@@ -108,8 +149,8 @@ dl {
 	box-sizing: border-box;
 	padding: 0 1.5rem;
 	overflow: auto;
-		-webkit-overflow-scrolling: touch;
-	}
+	-webkit-overflow-scrolling: touch;
+}
 .threads {
 	left: 0;
 	z-index: 2;
