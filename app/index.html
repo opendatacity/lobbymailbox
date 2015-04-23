@@ -32,10 +32,10 @@
 				{{ outlet }}
 			</div>
 		</script>
-		<script type="text/x-handlebars" data-template-name='inbox'>
+		<script type="text/x-handlebars" data-template-name="inbox">
 			<nav class="threads">
 			<ul>
-			{{# each thread in model.threads }}
+			{{# each thread in model }}
 			{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" title=thread.description }}
 				<p class="author">{{ thread.initiator.name }} <span class="affiliation">{{ thread.initiator.affiliation }}</span></p>
 				<p class="subject">{{ thread.subject }}</p>

@@ -58,6 +58,9 @@ App.Folder.reopenClass({
 App.Thread = Ember.Object.extend({
 	id: null,
 	messages: [],
+	date: function () {
+		return this.get('messages').get('lastObject').get('date');
+	}.property('messages'),
 	count: function () {
 		return this.get('messages').length;
 	}.property('messages'),
@@ -192,7 +195,7 @@ App.ApplicationRoute = Ember.Route.extend({
 
 App.InboxRoute = Ember.Route.extend({
 	model: function () {
-		return App.Inbox.find();
+		return App.Inbox.find().get('threads').sortBy('date');
 	}
 });
 
