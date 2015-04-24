@@ -51,7 +51,7 @@
 		<script type="text/x-handlebars" data-template-name="files">
 			<nav class="threads">
 			<ul>
-			{{# each file in model.files }}
+			{{# each file in model }}
 			{{# link-to "file" file.name tagName="li" }}
 				<p class="subject">{{ file.name }}</p>
 			{{/ link-to }}
@@ -96,8 +96,8 @@
 				{{# if message.attachments }}
 				<dl class="attachments">
 					<dt>{{ plural message.attachmentCount 1="Anhang" default="Anhänge" }}</dt>
-					{{# each attachment in message.attachments }}
-					<dd><a href="/attachments/{{ message.id }}/{{ attachment }}">{{ attachment }}</a></dd>
+					{{# each file in message.attachments }}
+					<dd>{{# link-to "attachment" file.id }}{{ file.name }}{{/ link-to }}</dd>
 					{{/ each }}
 				</dl>
 				{{/ if }}
@@ -106,7 +106,26 @@
 			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="file">
-			File: {{ model.name }}
+			<header class="meta">
+			<dl>
+				<dt>Dateiname</dt>
+				<dd>{{ model.name }}</dd>
+			</dl>
+			{{# if model.message }}
+			<dl>
+				<dt>Aus E-Mail-Wechsel</dt>
+				<dd>{{# link-to "thread" model.message.thread }}{{ model.message.subject }}{{/ link-to }}</dd>
+			</dl>
+			{{/ if }}
+			</header>
+			<section class="document zoomable">
+				<input type="range" class="zoom-control" value="1" min="0.1" max="4" step="0.05">
+				{{# each page in model.pages }}
+				<p class="page">
+				<span><img src="{{ page.path }}" width="{{ page.width }}" height="{{ page.height }}" style="height: 100vh"></span>
+				</p>
+				{{/ each }}
+			</section>
 			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="person-list">
@@ -115,6 +134,13 @@
 			<li><span class="name">{{ person.name }}</span> <span class="email">{{ person.email }}</span></li>
 			{{/ each }}
 		</ul>
+		</script>
+		<script type="text/x-handlebars" data-template-name="attachment">
+			<div class="overlay">
+			{{# link-to "thread" model.message.thread tagName="div" classList="close" }}&times;{{/ link-to }}
+			{{ render "file" model }}
+			{{ outlet }}
+			</div>
 		</script>
 		<div id="app-wrapper">
 

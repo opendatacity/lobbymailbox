@@ -45,16 +45,52 @@ App.Inbox.reopenClass({
 		return App.FIXTURES.inbox;
 	},
 });
-App.Folder = Ember.Object.extend();
-App.Folder.reopenClass({
-	find: function (name) {
-		if (name) {
-			return App.FIXTURES.files.files.findBy('name', name);
+App.Folder = Ember.Object.create({
+	files: [],
+	push: function (file) {
+		this.get('files').push(file);
+	},
+	find: function (id) {
+		if (id) {
+			return this.get('files').findBy('id', id);
 		} else {
-			return App.FIXTURES.files;
+			return this.get('files');
 		}
 	},
 });
+App.File = Ember.Object.extend({
+	id: function () {
+		return this.get('name').replace(/\.[^\/]*$/, '');
+	}.property('name'),
+	path: function () {
+		var p = [ '' ];
+		if (this.get('message')) {
+			p.push('attachments');
+			p.push(this.message.id);
+		} else {
+			p.push('files');
+		}
+		p.push(this.name);
+		return p.join('/');
+	}.property('name'),
+	pageCount: function () {
+		if (!this.pages) return null;
+		return this.pages.length;
+	},
+	init: function () {
+		var me = this;
+		App.Folder.push(this);
+		if (this.pages) this.pages.forEach(function (page, i) {
+			page.path = me.get('path').replace(/\..*?$/, '-' + (i+1) + '.png');
+			page.width = page.size[0];
+			page.height = page.size[1];
+		});
+	}
+});
+App.FileController = Ember.Controller.extend({
+	zoom: 1,
+});
+
 App.Thread = Ember.Object.extend({
 	id: null,
 	messages: [],
@@ -105,7 +141,9 @@ App.Thread = Ember.Object.extend({
 	}.property('unreadCount'),
 
 	init: function () {
+		var me = this;
 		this.set('messages', this.get('messages').sortBy('date'));
+		this.get('messages').forEach(function (m) { m.thread = me; });
 	}
 });
 App.Thread.reopenClass({
@@ -138,6 +176,7 @@ App.Message = Ember.Object.extend({
 	}.observes('unread'),
 
 	init: function () {
+		var me = this;
 		this.set('date', new Date(this.get('date')));
 		this.set('body', this.get('body').replace(/\n{3,}/g, '\n\n'));
 		if (localStorage) {
@@ -148,33 +187,32 @@ App.Message = Ember.Object.extend({
 		if (this.to && this.to.length === 0) this.set('to', null);
 		if (this.cc && this.cc.length === 0) this.set('cc', null);
 		if (this.attachments && this.attachments.length === 0) this.set('attachments', null);
+		if (this.attachments) this.set('attachments', this.get('attachments').map(function (attachment) {
+			attachment.message = me;
+			return App.File.create(attachment);
+		}));
 	},
-});
-App.File = Ember.Object.extend({
-	name: null,
 });
 
 App.FIXTURES = {
 	inbox: App.Inbox.create({
 		threads: data.threads.map(function (thread) {
 			thread.messages = thread.messages.map(function (message) {
+				message.thread = thread;
 				return App.Message.create(message);
 			});
 			return App.Thread.create(thread);
 		}),
 	}),
-	files: App.Folder.create({
-		files: [
-			App.File.create({ name: 'Geheim.pdf' }),
-			App.File.create({ name: 'Bundestrojaner.exe' }),
-		],
-	}),
 };
+App.Folder.push(App.File.create({ name: 'Geheim.pdf' }));
 
 App.Router.map(function() {
 	this.resource('index', { path: '/'}, function () {
 		this.resource('inbox', function () {
-			this.resource('thread', { path: '/:thread_id' });
+			this.resource('thread', { path: '/:thread_id' }, function () {
+				this.resource('attachment', { path: '/:file_name' });
+			});
 		});
 		this.resource('files', function () {
 			this.resource('file', { path: '/:file_name' });
@@ -206,6 +244,12 @@ App.FilesRoute = Ember.Route.extend({
 });
 
 App.FileRoute = Ember.Route.extend({
+	model: function (params) {
+		return App.Folder.find(params.file_name);
+	}
+});
+
+App.AttachmentRoute = Ember.Route.extend({
 	model: function (params) {
 		return App.Folder.find(params.file_name);
 	}
@@ -285,10 +329,68 @@ Ember.Handlebars.helper('date', function (date) {
 		zerofill(date.getHours(), 2) + ':' + zerofill(date.getMinutes(), 2)
 	);
 });
+Ember.Handlebars.helper('filesize', function (bytes) {
+	var units = ['B', 'kB', 'MB', 'GB'];
+	while (bytes >= 1000) {
+		bytes /= 1000;
+		units.shift();
+	}
+	return Math.round(bytes) + ' ' + units.shift();
+});
 function pluralHelper (n, args) {
 	var rules = args.hash? args.hash : args;
 	return ((rules[n] !== undefined)? rules[n] : rules.default).replace(/%d/g, n);
 }
 Ember.Handlebars.helper('plural', pluralHelper);
 
+$(document).on('input change', '.zoom-control', function (ev) {
+	var zoom = +$(this).val();
+	setZoom($(this).parents('.zoomable'), zoom);
+});
+var gestureStartZoom, gestureStartFingerDist, zooming = false;
+function fingerDistance (event) {
+	if (event.originalEvent) event = event.originalEvent;
+	var x = (event.touches[0].clientX - event.touches[1].clientX);
+	var y = (event.touches[0].clientY - event.touches[1].clientY);
+	return Math.sqrt(x*x + y*y);
+}
+$(document).on('touchstart', '.zoomable', function (ev) {
+	if (ev.originalEvent.touches.length === 2) {
+		zooming = true;
+		gestureStartZoom = $(this).data('zoom') || 1;
+		gestureStartFingerDist = fingerDistance(ev);
+	} else {
+		zooming = false;
+	}
+});
+$(document).on('touchmove', '.zoomable', function (ev) {
+	if (!zooming) return;
+	console.log(ev);
+
+	ev.preventDefault();
+	var $this = $(this);
+	var dist = fingerDistance(ev);
+	setZoom($this, dist / gestureStartFingerDist * gestureStartZoom);
+});
+
+function setZoom (element, zoom, center) {
+	var $element = $(element);
+	var oldZoom = $element.data('zoom') || 1;
+	$element.data('zoom', zoom);
+	var zoomChange = zoom / oldZoom;
+
+	if (!center) { center = [0.5, 0.5]; }
+	var x = center[0];
+	var y = center[1];
+
+	var addLeft = (zoomChange - 1) * x;
+	var addTop = (zoomChange - 1) * y;
+
+	$element.find('img').css('height', (zoom * 100) + 'vh');
+	var scrollLeft = zoomChange * $element.scrollLeft() + addLeft * $element.width();
+	var scrollTop = zoomChange * $element.scrollTop() + addTop * $element.height();
+	if ($element.scrollTop() === 0) scrollTop = 0;
+
+	$element.scrollLeft(scrollLeft).scrollTop(scrollTop);
+}
 });

@@ -159,7 +159,7 @@ dl {
 }
 .messages {
 	left: 100%;
-	z-index: 1;
+	z-index: 3;
 }
 .messages-placeholder {
 	display: none;
@@ -318,5 +318,47 @@ dl {
 	+ .message {
 		margin-top: 6rem;
 		border-top: 5px solid $base-line-color;
+	}
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: rgba(#000, .8);
+}
+.file-controls {
+	position: absolute;
+	top: 1em;
+	left: 1em;
+	z-index: 3;
+}
+.document {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	z-index: 2;
+	overflow: auto;
+	text-align: center;
+
+	.zoom-control {
+		position: fixed;
+	}
+
+	.page {
+		margin: 1em 0;
+	}
+	span {
+		display: inline-block;
+		background-color: #fff;
+		box-shadow: 0 .3em 1em rgba(#000, .2);
+	}
+	img {
+		width: auto;
+		//height: auto;
 	}
 }
