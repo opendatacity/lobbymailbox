@@ -2,7 +2,11 @@
   "name": "lobbymail",
   "private": true,
   "dependencies": {
-    "jquery": "~1.11.0"
+    "jquery": "~1.11.0",
+    "rangeslider.js": "~1.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "jquery": "2.1.1"
+  }
 }

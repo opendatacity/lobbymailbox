@@ -23,18 +23,21 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-%icon-circle-o {
-	@extend %icon;
-	content: "\e600";
-}
+$icons: (
+	circle-o: "\e600",
+	circle: "\e601",
+	attachment: "\e9cd",
+	file-zip: "\e92b",
+	zoom-in: "\e987",
+	zoom-out: "\e988",
+	file-pdf: "\eada",
+	file-word: "\eadc",
+	download: "\e9c7",
+);
 
-%icon-circle {
-	@extend %icon;
-	content: "\e601";
+@each $name, $content in $icons {
+	%icon-#{$name} {
+		@extend %icon;
+		content: $content;
+	}
 }
-
-%icon-attachment {
-	@extend %icon;
-	content: "\e9cd";
-}
-

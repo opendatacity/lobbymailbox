@@ -246,13 +246,13 @@ App.FilesRoute = Ember.Route.extend({
 App.FileRoute = Ember.Route.extend({
 	model: function (params) {
 		return App.Folder.find(params.file_name);
-	}
+	},
 });
 
 App.AttachmentRoute = Ember.Route.extend({
 	model: function (params) {
 		return App.Folder.find(params.file_name);
-	}
+	},
 });
 
 App.ThreadRoute = Ember.Route.extend({
@@ -314,6 +314,15 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 	},
 });
 
+App.FileView = Ember.View.extend({
+	didInsertElement: function () {
+		console.log($('input[type="range"]'))
+		$('input[type="range"]').rangeslider({
+			polyfill: false,
+		});
+	}
+})
+
 var months = 'Januar Februar März April Mai Juni Juli August September Oktober November Dezember'.split(' ');
 function zerofill (n, len) {
 	n = ''+n;
@@ -343,6 +352,8 @@ function pluralHelper (n, args) {
 }
 Ember.Handlebars.helper('plural', pluralHelper);
 
+// Zoomable containers
+var defaultZoom = 0.94;
 $(document).on('input change', '.zoom-control', function (ev) {
 	var zoom = +$(this).val();
 	setZoom($(this).parents('.zoomable'), zoom);
@@ -357,7 +368,7 @@ function fingerDistance (event) {
 $(document).on('touchstart', '.zoomable', function (ev) {
 	if (ev.originalEvent.touches.length === 2) {
 		zooming = true;
-		gestureStartZoom = $(this).data('zoom') || 1;
+		gestureStartZoom = $(this).data('zoom') || defaultZoom;
 		gestureStartFingerDist = fingerDistance(ev);
 	} else {
 		zooming = false;
@@ -375,7 +386,7 @@ $(document).on('touchmove', '.zoomable', function (ev) {
 
 function setZoom (element, zoom, center) {
 	var $element = $(element);
-	var oldZoom = $element.data('zoom') || 1;
+	var oldZoom = $element.data('zoom') || defaultZoom;
 	$element.data('zoom', zoom);
 	var zoomChange = zoom / oldZoom;
 
