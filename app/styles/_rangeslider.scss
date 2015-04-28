@@ -14,6 +14,7 @@ $slider-border-width: 1px;
 .rangeslider {
   position: relative;
 	border: $slider-border-width solid rgba(#fff, .8);
+	background: #000;
 }
 
 .rangeslider--disabled {

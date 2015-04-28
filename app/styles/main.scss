@@ -5,6 +5,8 @@ $base-link-color: $base-accent-color;
 $base-line-color: #eee;
 $base-accent-background-color: #e4e9ea;
 
+$base-text-shadow: 0 .05em .1em rgba(#000, .3);
+
 $base-background-color: #fff;
 $faded-background-color: darken($base-background-color, 3%);
 
@@ -370,7 +372,7 @@ dl {
 			pointer-events: none;
 			cursor: default;
 			margin: 0;
-			text-shadow: 0 .05em .1em rgba(#000, .3);
+			text-shadow: $base-text-shadow;
 		}
 		dl {
 			margin: 0;
@@ -421,6 +423,7 @@ dl {
 		left: 1rem;
 		bottom: 1rem;
 		color: #fff;
+		text-shadow: $base-text-shadow;
 		&:before {
 			@extend %icon-zoom-out;
 		}
