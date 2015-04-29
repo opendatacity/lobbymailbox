@@ -277,17 +277,19 @@ App.ThreadController = Ember.Controller.extend({
 });
 
 App.Scrolling = Ember.Mixin.create({
-	bindScrolling: function() {
+	bindScrolling: function(el) {
 		var onScroll, me = this;
+		if (!el) el = this.element;
 
-		onScroll = debounce(function() { return me.scrolled(); }, 100, true);
-		$(this.element).bind('touchmove', onScroll);
-		$(this.element).bind('scroll', onScroll);
+		onScroll = debounce(function() { return me.scrolled(); }, 50, true);
+		$(el).bind('touchmove', onScroll);
+		$(el).bind('scroll', onScroll);
 	},
 
-	unbindScrolling: function() {
-		$(this.element).unbind('scroll');
-		$(this.element).unbind('touchmove');
+	unbindScrolling: function(el) {
+		if (!el) el = this.element;
+		$(el).unbind('scroll');
+		$(el).unbind('touchmove');
 	}
 
 });
@@ -295,16 +297,16 @@ App.Scrolling = Ember.Mixin.create({
 App.ThreadView = Ember.View.extend(App.Scrolling, {
 	classNames: ['messages', 'detail-view'],
 	didInsertElement: function () {
-		this.bindScrolling();
+		this.bindScrolling(document);
 	},
 	willDestroyElement: function () {
-		this.unbindScrolling();
+		this.unbindScrolling(document);
 	},
 	scrolled: function () {
 		var $this = $(this.element);
 		// Iterate over all articles in the view and find the last one above
 		// 33% of the viewport height
-		var targetHeight = $this.height()/3;
+		var targetHeight = $(window).scrollTop() + $(window).height()/3;
 		$this.find('article').each(function (i, article) {
 			var $article = $(article);
 			var top = $article.position().top;
@@ -325,7 +327,7 @@ App.FileView = Ember.View.extend({
 			polyfill: false,
 		});
 	}
-})
+});
 
 var months = 'Januar Februar März April Mai Juni Juli August September Oktober November Dezember'.split(' ');
 function zerofill (n, len) {
