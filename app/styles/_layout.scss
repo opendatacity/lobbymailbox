@@ -23,20 +23,21 @@
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
-	padding: 0 $view-padding;
+	padding: 0 $view-padding $view-padding;
 	-webkit-overflow-scrolling: touch;
 }
 .list-view {
 	position: fixed;
 	top: 7em;
 	bottom: 0;
+	height: calc(100vh - 7em);
 	overflow: auto;
 	z-index: 2;
 	overflow: auto;
 }
 .detail-view {
 	//position: relative;
-	margin-left: 100%;
+	margin-left: 0;
 	width: 100%;
 	z-index: 1;
 }
@@ -53,6 +54,9 @@
 		&:hover {
 			opacity: 1;
 		}
+	}
+	.detail-view {
+		margin-left: 100%;
 	}
 	.detail-placeholder {
 		display: none;
@@ -75,6 +79,10 @@
 		margin-left: 0;
 		left: 0;
 		right: 0;
+	}
+	.thread .detail-view,
+	.file .detail-view {
+		margin-left: 0;
 	}
 	.detail-placeholder {
 		display: block;

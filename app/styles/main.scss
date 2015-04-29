@@ -61,6 +61,7 @@ body {
 	font: 16px/1.35 "Source Sans Pro", "Myriad Pro", "Helvetica Neue", sans-serif;
 	margin: 0;
 	background-color: $base-background-color;
+	overflow-x: hidden;
 }
 
 a {

@@ -264,7 +264,7 @@ App.ThreadRoute = Ember.Route.extend({
 		return App.Thread.find(+params.thread_id);
 	},
 	afterModel: function () {
-		$('.messages').scrollTop(0);
+		$(document).scrollTop(0);
 	},
 });
 
