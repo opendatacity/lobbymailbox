@@ -84,7 +84,6 @@ dl {
 }
 .detail-placeholder {
 	@extend .detail-view;
-	display: none;
 	z-index: 0;
 	font-size: 1.5em;
 	font-weight: $light-font-weight;

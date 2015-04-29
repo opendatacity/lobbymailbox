@@ -44,6 +44,9 @@
 .index .stage {
 	transform: translateX(0);
 }
+.detail-placeholder {
+	display: none;
+}
 .thread,
 .file {
 	.stage {
