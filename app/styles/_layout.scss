@@ -44,6 +44,9 @@
 .index .stage {
 	transform: translateX(0);
 }
+.index .detail-view {
+	display: none;
+}
 .detail-placeholder {
 	display: none;
 }
@@ -89,9 +92,6 @@
 	}
 	.detail-placeholder {
 		display: block;
-	}
-	.main-header h1 a:before {
-		display: none;
 	}
 }
 
