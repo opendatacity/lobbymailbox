@@ -20,23 +20,22 @@
 }
 .list-view,
 .detail-view {
-	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
 	padding: 0 $view-padding $view-padding;
 	-webkit-overflow-scrolling: touch;
 }
 .list-view {
-	position: fixed;
-	top: 7em;
+	position: absolute;
+	top: 0;
 	bottom: 0;
-	height: calc(100vh - 7em);
 	overflow: auto;
 	z-index: 2;
 	overflow: auto;
 }
 .detail-view {
-	//position: relative;
+	position: relative;
+	top: 0;
 	margin-left: 0;
 	width: 100%;
 	z-index: 1;
@@ -78,6 +77,7 @@
 		transform: none;
 	}
 	.list-view {
+		position: fixed;
 		width: $sidebar-width;
 	}
 	.detail-view {
