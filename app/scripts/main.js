@@ -27,7 +27,11 @@ var undefined; /* jshint ignore:line */
 
 App.ApplicationController = Ember.Controller.extend({
 	updateCurrentPath: function() {
-		var className = this.get('currentPath').split('.').pop();
+		var path = this.get('currentPath').split('.');
+		var className = path.pop();
+		while (path.length && className === 'index') {
+			className = path.pop();
+		}
 		$appWrapper.attr('class', className);
 	}.observes('currentPath')
 }),
@@ -289,7 +293,7 @@ App.Scrolling = Ember.Mixin.create({
 });
 
 App.ThreadView = Ember.View.extend(App.Scrolling, {
-	classNames: ['messages'],
+	classNames: ['messages', 'detail-view'],
 	didInsertElement: function () {
 		this.bindScrolling();
 	},
@@ -315,8 +319,8 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 });
 
 App.FileView = Ember.View.extend({
+	classNames: ['file-browser', 'detail-view'],
 	didInsertElement: function () {
-		console.log($('input[type="range"]'))
 		$('input[type="range"]').rangeslider({
 			polyfill: false,
 		});
@@ -376,7 +380,6 @@ $(document).on('touchstart', '.zoomable', function (ev) {
 });
 $(document).on('touchmove', '.zoomable', function (ev) {
 	if (!zooming) return;
-	console.log(ev);
 
 	ev.preventDefault();
 	var $this = $(this);

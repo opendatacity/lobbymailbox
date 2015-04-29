@@ -1,0 +1,30 @@
+.list-view {
+	transition: opacity .2s ease;
+	user-select: none;
+
+	ul {
+		list-style: none;
+		padding: 0;
+	}
+	li {
+		font-weight: $light-font-weight;
+		padding: .5rem 1.5rem;
+		margin: 0 #{-1.5rem};
+		cursor: pointer;
+		&.active {
+			color: $base-accent-color;
+			.author {
+				color: rgba($base-accent-color, .6);
+			}
+		}
+		&.active, &:hover {
+			background-color: $base-accent-background-color;
+		}
+		&:active {
+			background-color: darken($base-accent-background-color, 5%);
+		}
+	}
+	p {
+		margin: 0;
+	}
+}

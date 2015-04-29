@@ -1,0 +1,84 @@
+.threads {
+	.has-attachments .subject:after {
+		@extend %icon-attachment;
+		opacity: .5;
+		margin-left: .5em;
+		font-size: .7em;
+	}
+	.author {
+		color: $base-faded-color;
+		font-size: .9em;
+		.affiliation {
+			@extend %all-small-caps;
+		}
+	}
+}
+.subject:before {
+	// Icon styling
+	color: $base-accent-color;
+	font-size: .8em;
+	float: left;
+	margin-top: .3em;
+	margin-left: -1.3em;
+}
+.unread-all .subject:before,
+.unread .subject:before {
+	@extend %icon-circle;
+}
+.unread-some .subject:before {
+	@extend %icon-circle-o;
+}
+/*ul*/.people {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	li {
+		margin-bottom: .5em;
+	}
+	span {
+		white-space: nowrap;
+	}
+	.name {
+		margin-right: .5em;
+	}
+	.email {
+		font-weight: $light-font-weight;
+	}
+}
+.message {
+	header {
+		color: $base-faded-color;
+		@media (min-width: $two-col-breakpoint) {
+			.from, .to, .cc {
+				width: 49%;
+			}
+			.from {
+				float: left;
+			}
+			.to, .cc {
+				float: right;
+			}
+			.cc, .subject-block {
+				clear: both;
+			}
+		}
+	}
+	h2 {
+		font-weight: normal;
+		color: $base-font-color;
+		margin: 0;
+		font-size: 1.4em;
+		font-weight: $light-font-weight;
+	}
+	pre {
+		white-space: pre-wrap;
+		font: inherit;
+	}
+	.attachments {
+		margin: 3em 0 0;
+	}
+	+ .message {
+		margin-top: 6rem;
+		border-top: 5px solid $base-line-color;
+	}
+}

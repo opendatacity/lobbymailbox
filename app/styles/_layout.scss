@@ -1,0 +1,77 @@
+#app-wrapper {
+	position: relative;
+	max-width: 70rem;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+}
+.stage {
+	position: absolute;
+	bottom: 0;
+	top: 7em;
+	width: 100%;
+	transition: transform .2s ease;
+}
+.list-view,
+.detail-view {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	bottom: 0;
+	box-sizing: border-box;
+	padding: 0 1.5rem;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+.list-view {
+	left: 0;
+	z-index: 3;
+}
+.detail-view {
+	left: 100%;
+	z-index: 2;
+}
+.index .stage {
+	transform: translateX(0);
+}
+.thread,
+.file {
+	.stage {
+		transform: translateX(-100%);
+	}
+	.list-view {
+		opacity: .3;
+		&:hover {
+			opacity: 1;
+		}
+	}
+	.detail-placeholder {
+		display: none;
+	}
+}
+@media (min-width: $two-col-breakpoint) {
+	.stage {
+		transition: none;
+	}
+	.index .stage,
+	.thread .stage,
+	.file .stage {
+		transform: none;
+	}
+	.list-view {
+		left: 0;
+		width: $sidebar-width;
+	}
+	.detail-view {
+		padding-left: $sidebar-width + 1.5rem;
+		left: 0;
+		right: 0;
+	}
+	.detail-placeholder {
+		display: block;
+	}
+	.main-header h1 a:before {
+		display: none;
+	}
+}
+

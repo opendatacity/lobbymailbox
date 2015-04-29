@@ -33,7 +33,7 @@
 			</div>
 		</script>
 		<script type="text/x-handlebars" data-template-name="inbox">
-			<nav class="threads">
+			<nav class="threads list-view">
 			<ul>
 			{{# each thread in model }}
 			{{# link-to "thread" thread tagName="li" classNameBindings="thread.unreadClass thread.hasAttachments" title=thread.description }}
@@ -43,22 +43,22 @@
 			{{/ each }}
 			</ul>
 			</nav>
-			<div class="messages messages-placeholder">
+			<div class="messages detail-placeholder">
 			<p>Bitte wählen Sie<br>einen Nachrichtenverlauf aus.</p>
 			</div>
 			{{ outlet }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="files">
-			<nav class="threads">
+			<nav class="folder list-view">
 			<ul>
 			{{# each file in model }}
-			{{# link-to "file" file.name tagName="li" }}
+			{{# link-to "file" file.id tagName="li" }}
 				<p class="subject">{{ file.name }}</p>
 			{{/ link-to }}
 			{{/ each }}
 			</ul>
 			</nav>
-			<div class="messages messages-placeholder">
+			<div class="file-browser detail-placeholder">
 			<p>Bitte wählen Sie<br>ein Dokument aus.</p>
 			</div>
 			{{ outlet }}
