@@ -5,6 +5,12 @@
 	height: 100%;
 	margin: 0 auto;
 }
+.main-header {
+	position: fixed;
+	z-index: 3;
+	width: 100%;
+	max-width: 70rem - 2 * $view-padding;
+}
 .stage {
 	position: absolute;
 	bottom: 0;
@@ -14,22 +20,25 @@
 }
 .list-view,
 .detail-view {
-	position: absolute;
-	width: 100%;
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
-	padding: 0 1.5rem;
-	overflow: auto;
+	padding: 0 $view-padding;
 	-webkit-overflow-scrolling: touch;
 }
 .list-view {
-	left: 0;
-	z-index: 3;
+	position: fixed;
+	top: 7em;
+	bottom: 0;
+	overflow: auto;
+	z-index: 2;
+	overflow: auto;
 }
 .detail-view {
-	left: 100%;
-	z-index: 2;
+	position: relative;
+	margin-left: 100%;
+	width: 100%;
+	z-index: 1;
 }
 .index .stage {
 	transform: translateX(0);
@@ -59,11 +68,11 @@
 		transform: none;
 	}
 	.list-view {
-		left: 0;
 		width: $sidebar-width;
 	}
 	.detail-view {
-		padding-left: $sidebar-width + 1.5rem;
+		padding-left: $sidebar-width + $view-padding;
+		margin-left: 0;
 		left: 0;
 		right: 0;
 	}

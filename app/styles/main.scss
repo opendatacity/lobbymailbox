@@ -12,8 +12,12 @@ $faded-background-color: darken($base-background-color, 3%);
 
 $light-font-weight: 300;
 
+$app-width: 70rem;
+$view-padding: 1.5rem;
 $sidebar-width: 25rem;
 $two-col-breakpoint: 2 * $sidebar-width;
+
+$debug: false;
 
 @import "normalize";
 @import "icomoon";
@@ -28,6 +32,16 @@ $two-col-breakpoint: 2 * $sidebar-width;
 // Needs to come last due to media queries
 @import "layout";
 
+// DEBUG
+@if $debug {
+	body {
+		background-color: (#eee*1.05) !important;
+	}
+	#app-wrapper {
+		background-color: #fff;
+	}
+}
+
 %all-small-caps {
 	text-transform: uppercase;
 	margin-left: .5em;
@@ -35,7 +49,6 @@ $two-col-breakpoint: 2 * $sidebar-width;
 	letter-spacing: .05em;
 	font-weight: normal;
 }
-
 html, body {
 	width: 100;
 	height: 100%;
