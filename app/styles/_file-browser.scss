@@ -1,0 +1,34 @@
+.file-browser {
+	header {
+		margin-top: 1em;
+	}
+	.filename dt {
+		display: none;
+	}
+	.filename,
+	dd,
+	h2 {
+		display: inline;
+	}
+	.filename + p {
+		display: inline;
+	}
+	h2 {
+		font-weight: $light-font-weight;
+		margin: 0 .5em .5em 0;
+	}
+	.download {
+		line-height: 2em;
+		@include button($base-accent-color);
+		&:before {
+			@extend %icon-download;
+			margin-right: .5em;
+		}
+	}
+	.document {
+		background-color: darken($base-background-color, 3%);
+		width: 100%;
+		height: calc(100vh - 20rem);
+		min-height: 10em;
+	}
+}

@@ -319,7 +319,7 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 });
 
 App.FileView = Ember.View.extend({
-	classNames: ['file-browser', 'detail-view'],
+	classNames: ['file-view'],
 	didInsertElement: function () {
 		$('input[type="range"]').rangeslider({
 			polyfill: false,
@@ -360,7 +360,7 @@ Ember.Handlebars.helper('plural', pluralHelper);
 var defaultZoom = 0.94;
 $(document).on('input change', '.zoom-control', function (ev) {
 	var zoom = +$(this).val();
-	setZoom($(this).parents('.zoomable'), zoom);
+	setZoom($(this).parents('.controls').siblings('.zoomable'), zoom);
 });
 var gestureStartZoom, gestureStartFingerDist, zooming = false;
 function fingerDistance (event) {

@@ -6,6 +6,7 @@
 	height: 100vh;
 	background-color: rgba(#000, .8);
 	user-select: none;
+	z-index: 5;
 
 	.close {
 		position: absolute;
@@ -26,6 +27,14 @@
 		&:active {
 			background-color: $base-accent-color;
 		}
+	}
+
+	.document {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 
 	header {
@@ -55,21 +64,10 @@
 			display: none;
 		}
 		.download {
-			color: #fff;
-			border: 1px solid rgba(#fff, .3);
-			border-radius: 3px;
-			padding: .5em;
-			font-weight: 300;
+			@include button(#fff);
 			&:before {
 				@extend %icon-download;
 				margin-right: .5em;
-			}
-			&:hover {
-				background-color: $base-accent-color;
-			}
-			&:active {
-				box-shadow: inset 0 1px 2px rgba(#000, .5);
-				background-color: darken($base-accent-color, 5%);
 			}
 		}
 		.thread {

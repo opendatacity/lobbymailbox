@@ -1,0 +1,15 @@
+@mixin button ($fg) {
+	color: $fg;
+	border: 1px solid rgba($fg, .3);
+	border-radius: 3px;
+	padding: .5em;
+	font-weight: 300;
+	&:hover {
+		color: #fff;
+		background-color: $base-accent-color;
+	}
+	&:active {
+		box-shadow: inset 0 1px 2px rgba(#000, .5);
+		background-color: darken($base-accent-color, 5%);
+	}
+}

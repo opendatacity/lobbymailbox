@@ -61,7 +61,9 @@
 			<div class="file-browser detail-placeholder">
 			<p>Bitte wählen Sie<br>ein Dokument aus.</p>
 			</div>
+			<div class="file-browser detail-view">
 			{{ outlet }}
+			</div>
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			{{# each message in model.messages }}
@@ -107,7 +109,7 @@
 		</script>
 		<script type="text/x-handlebars" data-template-name="file">
 			<header class="meta">
-			<dl>
+			<dl class="filename">
 				<dt>Dateiname</dt>
 				<dd><h2>{{ model.name }}</h2></dd>
 			</dl>
@@ -115,18 +117,20 @@
 			{{# if model.message }}
 			<dl class="thread">
 				<dt>Aus E-Mail-Wechsel</dt>
-				<dd>{{# link-to "thread" model.message.thread }}{{ model.message.subject }}{{/ link-to }}</dd>
+				<dd>{{# link-to "thread" model.message.thread classNameBindings="model.message.thread.unreadClass" }}<span class="subject">{{ model.message.thread.subject }}</span>{{/ link-to }}</dd>
 			</dl>
 			{{/ if }}
 			</header>
-			<section class="document zoomable">
-				{{# each page in model.pages }}
-				<p class="page">
-				<span><img src="{{ page.path }}" width="{{ page.width }}" height="{{ page.height }}" style="height: 94vh"></span>
-				</p>
-				{{/ each }}
+			<section class="document">
 				<div class="controls">
 					<input type="range" class="zoom-control" value="0.96" min="0.1" max="4" step="0.05">
+				</div>
+				<div class="pages zoomable">
+					{{# each page in model.pages }}
+					<p class="page">
+					<span><img src="{{ page.path }}" width="{{ page.width }}" height="{{ page.height }}" style="height: 94vh"></span>
+					</p>
+					{{/ each }}
 				</div>
 			</section>
 			{{ outlet }}
