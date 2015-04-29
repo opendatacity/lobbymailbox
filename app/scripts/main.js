@@ -407,4 +407,19 @@ function setZoom (element, zoom, center) {
 
 	$element.scrollLeft(scrollLeft).scrollTop(scrollTop);
 }
+
+// Quick UI enhancements
+$(document).on('click', '.overlay', function (ev) {
+	var $target = $(ev.target);
+	if (!$target.is('p.page')) return;
+	$target.parents('.overlay').find('.close').click();
+});
+// Key Bindings
+var ESCAPE_KEY = 27;
+$(document).on('keyup', function (ev) {
+	if (ev.keyCode === ESCAPE_KEY) {
+		$('.overlay .close').click();
+	}
+});
+
 });
