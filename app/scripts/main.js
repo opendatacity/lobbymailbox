@@ -360,7 +360,7 @@ Ember.Handlebars.helper('plural', pluralHelper);
 
 // Zoomable containers
 var defaultZoom = 0.94;
-$(document).on('input change', '.zoom-control', function (ev) {
+$(document).on('input change', '.zoom-control', function () {
 	var zoom = +$(this).val();
 	setZoom($(this).parents('.controls').siblings('.zoomable'), zoom);
 });
