@@ -94,7 +94,6 @@ App.File = Ember.Object.extend({
 		return type;
 	}.property('name'),
 	typeClass: function () {
-		console.log(this.get('type'));
 		return 'file-' + this.get('type');
 	}.property('type'),
 	isAttachment: function () {
@@ -246,7 +245,6 @@ App.FIXTURES = {
 data.files.forEach(function (file) {
 	App.File.create(file);
 });
-console.log(App.FIXTURES);
 
 App.Router.map(function() {
 	this.resource('index', { path: '/'}, function () {
@@ -274,7 +272,7 @@ App.ApplicationRoute = Ember.Route.extend({
 
 App.IndexRoute = Ember.Route.extend({
 	beforeModel: function () {
-		this.transitionTo('inbox');
+		//this.transitionTo('inbox');
 	}
 });
 
