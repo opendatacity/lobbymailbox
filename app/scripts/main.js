@@ -1,4 +1,4 @@
-$.getJSON('/data/threads.json').then(function (data) {
+$.getJSON('/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
 
@@ -64,13 +64,16 @@ App.Folder = Ember.Object.create({
 });
 App.File = Ember.Object.extend({
 	id: function () {
-		return this.get('name').replace(/\.[^\/]*$/, '');
+		try {
+			return this.get('name').replace(/\.[^\/]*$/, '');
+		} catch (e) {
+			console.error(this);
+		}
 	}.property('name'),
 	path: function () {
-		var p = [ '' ];
+		var p = [ '/data' ];
 		if (this.get('message')) {
 			p.push('attachments');
-			p.push(this.message.id);
 		} else {
 			p.push('files');
 		}
@@ -81,11 +84,31 @@ App.File = Ember.Object.extend({
 		if (!this.pages) return null;
 		return this.pages.length;
 	},
+	friendlyName: function () {
+		var name = this.get('name').replace(/\..+?$/, '').replace(/[^a-z0-9äöüß\.-]+/ig, ' ');
+		return name;
+	}.property('name'),
+	type: function () {
+		var type = this.get('name').split('.').pop().toLowerCase();
+		if (type === 'docx') return 'doc';
+		return type;
+	}.property('name'),
+	typeClass: function () {
+		console.log(this.get('type'));
+		return 'file-' + this.get('type');
+	}.property('type'),
+	isAttachment: function () {
+		return !!this.get('message');
+	}.property('message'),
 	init: function () {
 		var me = this;
 		App.Folder.push(this);
 		if (this.pages) this.pages.forEach(function (page, i) {
-			page.path = me.get('path').replace(/\..*?$/, '-' + (i+1) + '.png');
+			var path = me.get('path').split('/');
+			var basename = path.pop();
+			path.push('previews');
+			path.push(basename.replace(/\..*?$/, '-' + (i+1) + '.png'));
+			page.path = path.join('/');
 			page.width = page.size[0];
 			page.height = page.size[1];
 		});
@@ -113,7 +136,11 @@ App.Thread = Ember.Object.extend({
 		return !!this.get('attachmentCount');
 	}.property('attachmentCount'),
 	subject: function () {
-		return this.get('messages').get('lastObject').get('subject').replace(/^(Re|Fwd|AW|WG):\s*/gi, '');
+		try {
+			return this.get('messages').get('lastObject').get('subject').replace(/^(Re|Fwd|AW|WG):\s*/gi, '');
+		} catch (e) {
+			return 'Kein Betreff';
+		}
 	}.property('messages'),
 	unreadCount: function () {
 		return this.get('messages').filterBy('unread').length;
@@ -146,7 +173,6 @@ App.Thread = Ember.Object.extend({
 
 	init: function () {
 		var me = this;
-		this.set('messages', this.get('messages').sortBy('date'));
 		this.get('messages').forEach(function (m) { m.thread = me; });
 	}
 });
@@ -182,6 +208,7 @@ App.Message = Ember.Object.extend({
 	init: function () {
 		var me = this;
 		this.set('date', new Date(this.get('date')));
+		this.set('id', this.get('date').valueOf());
 		this.set('body', this.get('body').replace(/\n{3,}/g, '\n\n'));
 		if (localStorage) {
 			var unread = +localStorage['unread'+this.id];
@@ -192,7 +219,14 @@ App.Message = Ember.Object.extend({
 		if (this.cc && this.cc.length === 0) this.set('cc', null);
 		if (this.attachments && this.attachments.length === 0) this.set('attachments', null);
 		if (this.attachments) this.set('attachments', this.get('attachments').map(function (attachment) {
-			attachment.message = me;
+			try {
+				attachment.message = me;
+			} catch (e) {
+				attachment = {
+					name: attachment,
+					message: me,
+				};
+			}
 			return App.File.create(attachment);
 		}));
 	},
@@ -209,7 +243,10 @@ App.FIXTURES = {
 		}),
 	}),
 };
-App.Folder.push(App.File.create({ name: 'Geheim.pdf' }));
+data.files.forEach(function (file) {
+	App.File.create(file);
+});
+console.log(App.FIXTURES);
 
 App.Router.map(function() {
 	this.resource('index', { path: '/'}, function () {
@@ -235,6 +272,12 @@ App.ApplicationRoute = Ember.Route.extend({
 	}
 });
 
+App.IndexRoute = Ember.Route.extend({
+	beforeModel: function () {
+		this.transitionTo('inbox');
+	}
+});
+
 App.InboxRoute = Ember.Route.extend({
 	model: function () {
 		return App.Inbox.find().get('threads').sortBy('date');
@@ -243,7 +286,7 @@ App.InboxRoute = Ember.Route.extend({
 
 App.FilesRoute = Ember.Route.extend({
 	model: function () {
-		return App.Folder.find();
+		return App.Folder.find().sortBy('friendlyName');
 	}
 });
 
@@ -313,7 +356,6 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 			var bottom = top + $article.innerHeight();
 			if (top < targetHeight && bottom > targetHeight) {
 				$article.click();
-				//if (article.id) history.replaceState(null, null, '#'+article.id);
 				return false;
 			}
 		});
@@ -338,6 +380,7 @@ function zerofill (n, len) {
 	return n;
 }
 Ember.Handlebars.helper('date', function (date) {
+	if (+date === 0) return new Ember.Handlebars.SafeString('Unbekanntes Datum');
 	date = new Date(date);
 	return new Ember.Handlebars.SafeString(
 		date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' +

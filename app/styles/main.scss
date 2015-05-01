@@ -31,6 +31,7 @@ $debug: false;
 @import "overlay";
 @import "document";
 @import "inbox";
+@import "folder";
 @import "file-browser";
 
 // Needs to come last due to media queries

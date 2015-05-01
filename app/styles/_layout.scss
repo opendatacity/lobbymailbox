@@ -84,6 +84,7 @@
 	.list-view {
 		position: fixed;
 		width: $sidebar-width;
+		top: 7em;
 	}
 	.detail-view {
 		padding-left: $sidebar-width + $view-padding;

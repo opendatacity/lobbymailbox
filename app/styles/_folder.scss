@@ -1,0 +1,14 @@
+.folder .filename {
+	@extend %file-type-icons;
+	padding-left: 1.2em;
+	&:before {
+		float: left;
+		margin-left: -1.2em;
+	}
+}
+.is-attachment .filename:after {
+	@extend %icon-attachment;
+	opacity: .5;
+	margin-left: .5em;
+	font-size: .7em;
+}

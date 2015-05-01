@@ -65,6 +65,7 @@
 		}
 		.download {
 			@include button(#fff);
+			@extend %file-type-icons;
 			&:before {
 				@extend %icon-download;
 				margin-right: .5em;

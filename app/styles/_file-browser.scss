@@ -19,6 +19,7 @@
 	}
 	.download {
 		line-height: 2em;
+		@extend %file-type-icons;
 		@include button($base-accent-color);
 		&:before {
 			@extend %icon-download;
@@ -30,5 +31,6 @@
 		width: 100%;
 		height: calc(100vh - 20rem);
 		min-height: 10em;
+		margin-top: .5em;
 	}
 }

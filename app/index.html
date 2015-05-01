@@ -23,7 +23,7 @@
 			<h1>{{ link-to "Lobbymail" "index" }}</h1>
 				<nav>
 					<ul>
-						<li>{{# link-to "inbox" }}Posteingang <span class="unread-count">{{ model.inbox.unreadCount }}</span>{{/ link-to }}</li>
+						<li>{{# link-to "inbox" }}Posteingang {{# if model.inbox.unreadCount }}<span class="unread-count">{{ model.inbox.unreadCount }}</span>{{/ if }}{{/ link-to }}</li>
 						<li>{{# link-to "files" }}Dokumente{{/ link-to }}</li>
 					</ul>
 				</nav>
@@ -52,8 +52,8 @@
 			<nav class="folder list-view">
 			<ul>
 			{{# each file in model }}
-			{{# link-to "file" file.id tagName="li" }}
-				<p class="subject">{{ file.name }}</p>
+			{{# link-to "file" file.id tagName="li" classNameBindings="file.isAttachment" }}
+				<p class="filename file-{{ file.type }}">{{ file.friendlyName }}</p>
 			{{/ link-to }}
 			{{/ each }}
 			</ul>
@@ -67,7 +67,7 @@
 		</script>
 		<script type="text/x-handlebars" data-template-name="thread">
 			{{# each message in model.messages }}
-			<article id="message-{{ message.id }}" class="message {{ if message.unread 'unread' }}" {{ action "markAsRead" message on="click" }}>
+			<article id="message{{ message.id }}" class="message {{ if message.unread 'unread' }}" {{ action "markAsRead" message on="click" }}>
 				<header>
 					{{# if message.from }}
 					<dl class="from">
@@ -99,7 +99,7 @@
 				<dl class="attachments">
 					<dt>{{ plural message.attachmentCount 1="Anhang" default="Anhänge" }}</dt>
 					{{# each file in message.attachments }}
-					<dd>{{# link-to "attachment" file.id }}{{ file.name }}{{/ link-to }}</dd>
+					<dd>{{# link-to "attachment" file.id classBinding="file.typeClass" }}{{ file.friendlyName }}{{/ link-to }}</dd>
 					{{/ each }}
 				</dl>
 				{{/ if }}
@@ -116,7 +116,7 @@
 			<p><a href="{{ model.path }}" class="download" title="Dieses Dokument herunterladen">Download</a></p>
 			{{# if model.message }}
 			<dl class="thread">
-				<dt>Aus E-Mail-Wechsel</dt>
+				<dt>Angehängt an</dt>
 				<dd>{{# link-to "thread" model.message.thread classNameBindings="model.message.thread.unreadClass" }}<span class="subject">{{ model.message.thread.subject }}</span>{{/ link-to }}</dd>
 			</dl>
 			{{/ if }}

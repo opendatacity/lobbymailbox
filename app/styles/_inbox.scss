@@ -81,4 +81,10 @@
 		margin-top: 6rem;
 		border-top: 5px solid $base-line-color;
 	}
+	.attachments a {
+		@extend %file-type-icons;
+		&:before {
+			margin-right: .2em;
+		}
+	}
 }

@@ -13,3 +13,14 @@
 		background-color: darken($base-accent-color, 5%);
 	}
 }
+%file-type-icons {
+	@each $type in pdf, doc, zip {
+		&.file-#{$type},
+		&[href*=".#{$type}"],
+		&[href*=".#{to-upper-case($type)}"] {
+			&:before {
+				@extend %icon-file-#{$type};
+			}
+		}
+	}
+}
