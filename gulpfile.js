@@ -68,7 +68,7 @@ gulp.task('fonts', function () {
 		.pipe($.size());
 });
 
-gulp.task('data', function () {
+gulp.task('data', ['html'], function () {
 	return fs.symlink(path.resolve(__dirname, 'app/data/'), path.resolve(__dirname, 'dist/data'));
 });
 

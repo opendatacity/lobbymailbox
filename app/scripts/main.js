@@ -2,7 +2,6 @@ $.getJSON('/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
 
-console.log('hello');
 function debounce(func, wait, immediate) {
 	var timeout;
 	return function() {
