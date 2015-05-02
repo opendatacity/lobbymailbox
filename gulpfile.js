@@ -1,7 +1,11 @@
 'use strict';
 // generated on 2015-04-15 using generator-gulp-webapp 0.1.0
 
+var fs = require('fs');
+var path = require('path');
 var gulp = require('gulp');
+var extractTemplates = require('./lib/extract-templates');
+var through = require('through2');
 
 // load plugins
 var $ = require('gulp-load-plugins')();
@@ -29,9 +33,12 @@ gulp.task('html', ['styles', 'scripts'], function () {
 	var cssFilter = $.filter('**/*.css');
 
 	return gulp.src('app/*.html')
+		.pipe(extractTemplates)
 		.pipe($.useref.assets({searchPath: '{.tmp,app}'}))
 		.pipe(jsFilter)
-		.pipe($.uglify())
+		.pipe($.uglify({
+			preserveComments: 'some',
+		}))
 		.pipe(jsFilter.restore())
 		.pipe(cssFilter)
 		.pipe($.csso())
@@ -54,11 +61,15 @@ gulp.task('images', function () {
 });
 
 gulp.task('fonts', function () {
-	return $.bowerFiles()
+	return gulp.src('app/fonts/*')
 		.pipe($.filter('**/*.{eot,svg,ttf,woff}'))
 		.pipe($.flatten())
 		.pipe(gulp.dest('dist/fonts'))
 		.pipe($.size());
+});
+
+gulp.task('data', function () {
+	return fs.symlink(path.resolve(__dirname, 'app/data/'), path.resolve(__dirname, 'dist/data'));
 });
 
 gulp.task('extras', function () {
@@ -70,7 +81,7 @@ gulp.task('clean', function () {
 	return gulp.src(['.tmp', 'dist'], { read: false }).pipe($.clean());
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extras']);
+gulp.task('build', ['html', 'images', 'fonts', 'data', 'extras']);
 
 gulp.task('default', ['clean'], function () {
 	gulp.start('build');
