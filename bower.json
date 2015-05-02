@@ -3,7 +3,9 @@
   "private": true,
   "dependencies": {
     "jquery": "~1.11.0",
-    "rangeslider.js": "~1.2.1"
+    "rangeslider.js": "~1.2.1",
+    "ember": "~1.11.3",
+    "fastclick": "~1.0.6"
   },
   "devDependencies": {},
   "resolutions": {
