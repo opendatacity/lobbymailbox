@@ -260,6 +260,7 @@ App.Router.map(function() {
 });
 App.Router.reopen({
 	location: 'auto',
+	rootURL: '/lobbymail/',
 });
 
 App.ApplicationRoute = Ember.Route.extend({
