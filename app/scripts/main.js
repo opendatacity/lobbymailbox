@@ -71,7 +71,7 @@ App.File = Ember.Object.extend({
 		}
 	}.property('name'),
 	path: function () {
-		var p = [ '/data' ];
+		var p = [ App.Router.get('rootURL') + 'data' ];
 		if (this.get('message')) {
 			p.push('attachments');
 		} else {
