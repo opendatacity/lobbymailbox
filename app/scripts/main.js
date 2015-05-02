@@ -1,4 +1,4 @@
-$.getJSON('/data/data.json').then(function (data) {
+$.getJSON('/lobbymail/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
 
