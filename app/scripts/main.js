@@ -2,6 +2,8 @@ $.getJSON('/lobbymail/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
 
+var rootURL = '/lobbymail/';
+
 function debounce(func, wait, immediate) {
 	var timeout;
 	return function() {
@@ -71,7 +73,7 @@ App.File = Ember.Object.extend({
 		}
 	}.property('name'),
 	path: function () {
-		var p = [ App.Router.rootURL + 'data' ];
+		var p = [ rootURL + 'data' ];
 		if (this.get('message')) {
 			p.push('attachments');
 		} else {
@@ -260,7 +262,7 @@ App.Router.map(function() {
 });
 App.Router.reopen({
 	location: 'auto',
-	rootURL: '/lobbymail/',
+	rootURL: rootURL,
 });
 
 App.ApplicationRoute = Ember.Route.extend({
