@@ -33,7 +33,8 @@
 	margin: 0;
 	padding: 0;
 	li {
-		margin-bottom: .5em;
+		padding: .3em 0;
+		overflow: hidden;
 	}
 	span {
 		white-space: nowrap;

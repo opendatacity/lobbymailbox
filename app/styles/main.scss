@@ -24,8 +24,9 @@ $debug: false;
 @import "fonts";
 @import "rangeslider";
 
-// Mixins
+// Mixins/functions
 @import "button";
+@import "color-functions";
 
 @import "header";
 @import "list-view";

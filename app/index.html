@@ -82,10 +82,12 @@
 					</dl>
 					{{/ if }}
 
+					{{# if message.subject }}
 					<dl class="subject-block">
 						<dt>Betreff</dt>
 						<dd><h2 class="subject">{{ message.subject }}</h2></dd>
 					</dl>
+					{{/ if }}
 					<p class="date">{{ date message.date }}</p>
 				</header>
 				<pre class="body">{{ message.body }}</pre>
@@ -132,7 +134,7 @@
 		<script type="text/x-handlebars" data-template-name="person-list">
 		<ul class="people">
 			{{# each person in model }}
-			<li><span class="name">{{ person.name }}</span> <span class="email">{{ person.email }}</span></li>
+			<li>{{# if person.name }}<span class="name">{{ person.name }}</span>{{/ if }} {{# if person.email }}<span class="email">{{ person.email }}</span>{{/ if }}</li>
 			{{/ each }}
 		</ul>
 		</script>
