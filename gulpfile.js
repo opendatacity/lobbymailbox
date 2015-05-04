@@ -31,6 +31,8 @@ gulp.task('scripts', function () {
 gulp.task('html', ['styles', 'scripts'], function () {
 	var jsFilter = $.filter('**/*.js');
 	var cssFilter = $.filter('**/*.css');
+	var htmlFilter = $.filter('**/*.html');
+	var notHTMLFilter = $.filter('!**/*.html');
 
 	return gulp.src('app/*.html')
 		.pipe(extractTemplates)
@@ -45,7 +47,12 @@ gulp.task('html', ['styles', 'scripts'], function () {
 		.pipe(cssFilter.restore())
 		.pipe($.useref.restore())
 		.pipe($.useref())
-		.pipe(gulp.dest('dist'))
+		.pipe(htmlFilter)
+		.pipe(gulp.dest('dist/lobbymail/'))
+		.pipe(htmlFilter.restore())
+		.pipe(notHTMLFilter)
+		.pipe(gulp.dest('dist/'))
+		.pipe(notHTMLFilter.restore())
 		.pipe($.size());
 });
 
@@ -53,17 +60,17 @@ gulp.task('fonts', function () {
 	return gulp.src('app/fonts/*')
 		.pipe($.filter('**/*.{eot,svg,ttf,woff}'))
 		.pipe($.flatten())
-		.pipe(gulp.dest('dist/fonts'))
+		.pipe(gulp.dest('dist/lobbymail/fonts/'))
 		.pipe($.size());
 });
 
 gulp.task('data', ['html'], function () {
-	return fs.symlink(path.resolve(__dirname, 'app/data/'), path.resolve(__dirname, 'dist/data'));
+	return fs.symlink(path.resolve(__dirname, 'app/data/'), path.resolve(__dirname, 'dist/lobbymail/data/'));
 });
 
 gulp.task('extras', function () {
 	return gulp.src(['app/*.*', '!app/*.html'], { dot: true })
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('dist/lobbymail/'));
 });
 
 gulp.task('clean', function () {
