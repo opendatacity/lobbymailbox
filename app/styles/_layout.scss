@@ -1,3 +1,11 @@
+@mixin chrome-position-bug-workaround {
+	// http://stackoverflow.com/questions/17068361/
+	-webkit-backface-visibility: hidden;
+	-webkit-transform: translateZ(0);
+}
+%chrome-position-bug-workaround {
+	@include chrome-position-bug-workaround;
+}
 #app-wrapper {
 	position: relative;
 	max-width: 70rem;
@@ -10,6 +18,7 @@
 	z-index: 3;
 	width: 100%;
 	max-width: 70rem - 2 * $view-padding;
+	@extend %chrome-position-bug-workaround;
 }
 .stage {
 	position: absolute;
@@ -49,6 +58,9 @@
 .detail-placeholder {
 	display: none;
 }
+body.attachment {
+	overflow: hidden;
+}
 .attachment {
 	.stage {
 		transition: none;
@@ -85,6 +97,8 @@
 		position: fixed;
 		width: $sidebar-width;
 		top: 7em;
+
+		@include chrome-position-bug-workaround;
 	}
 	.detail-view {
 		padding-left: $sidebar-width + $view-padding;

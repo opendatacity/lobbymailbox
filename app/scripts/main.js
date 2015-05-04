@@ -24,6 +24,7 @@ FastClick.attach(document.body);
 if (!localStorage) localStorage = []; /* jshint ignore:line */
 
 var $appWrapper = $('#app-wrapper');
+var $body = $(document.body);
 var App = Ember.Application.create({ rootElement: $appWrapper, });
 var undefined; /* jshint ignore:line */
 
@@ -34,7 +35,7 @@ App.ApplicationController = Ember.Controller.extend({
 		while (path.length && className === 'index') {
 			className = path.pop();
 		}
-		$appWrapper.attr('class', className);
+		$body.attr('class', className);
 	}.observes('currentPath')
 }),
 
