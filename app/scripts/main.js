@@ -274,19 +274,12 @@ App.ApplicationRoute = Ember.Route.extend({
 	model: function () {
 		return {
 			inbox: App.Inbox.find(),
+			content: Ember.String.htmlSafe($('.description').html())
 		};
 	}
 });
 
 App.IndexRoute = Ember.Route.extend({
-	beforeModel: function () {
-		//this.transitionTo('inbox');
-	},
-	model: function () {
-		return {
-			content: Ember.String.htmlSafe($('.description').html())
-		}
-	}
 });
 
 App.InboxRoute = Ember.Route.extend({
