@@ -447,7 +447,7 @@ function setZoom (element, zoom, center) {
 	var addLeft = (zoomChange - 1) * x;
 	var addTop = (zoomChange - 1) * y;
 
-	$element.find('img').css('height', (zoom * 100) + 'vh');
+	$element.find('img').css('height', (zoom * 100) + 'vmin');
 	var scrollLeft = zoomChange * $element.scrollLeft() + addLeft * $element.width();
 	var scrollTop = zoomChange * $element.scrollTop() + addTop * $element.height();
 	if ($element.scrollTop() === 0) scrollTop = 0;

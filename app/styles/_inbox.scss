@@ -77,6 +77,8 @@
 	}
 	.attachments {
 		margin: 3em 0 0;
+		background-color: $base-accent-background-color;
+		padding: .5em;
 	}
 	+ .message {
 		margin-top: 6rem;

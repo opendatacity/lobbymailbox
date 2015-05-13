@@ -1,0 +1,6 @@
+@function tint($color, $amount) {
+	@return $color * (1 - $amount / 100%) + white * ($amount / 100%);
+}
+@function shade($color, $amount) {
+	@return $color * (1 - $amount / 100%) + black * ($amount / 100%);
+}
