@@ -29,6 +29,7 @@ $debug: false;
 @import "color-functions";
 
 @import "header";
+@import "footer";
 @import "list-view";
 @import "overlay";
 @import "document";
@@ -93,4 +94,11 @@ dl {
 	color: $base-faded-color;
 	cursor: default;
 	user-select: none;
+}
+
+.noscript {
+	display: none;
+}
+.no-js .noscript {
+	display: block;
 }

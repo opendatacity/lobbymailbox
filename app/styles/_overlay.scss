@@ -8,6 +8,14 @@
 	user-select: none;
 	z-index: 5;
 
+	footer {
+		background-color: transparent;
+		border-top: none;
+		a {
+			color: #fff;
+		}
+	}
+
 	.close {
 		position: absolute;
 		z-index: 4;

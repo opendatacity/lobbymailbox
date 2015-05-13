@@ -1,0 +1,9 @@
+footer {
+	margin-top: 2em;
+	margin-bottom: -$view-padding;
+	padding: 2em 0;
+	color: lighten($base-font-color, 40%);
+	background-color: rgba($base-line-color, .3);
+	border-top: 1px solid $base-line-color;
+	text-align: center;
+}

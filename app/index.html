@@ -11,7 +11,7 @@
 		<!-- endbuild -->
 
 	</head>
-	<body>
+	<body class="no-js">
 		<script type="text/x-handlebars" data-template-name='index'>
 			<header class="main-header">
 			<h1>{{ link-to "Lobbymail" "index" }}</h1>
@@ -24,6 +24,7 @@
 			</header>
 			<div class="stage">
 				{{ outlet }}
+				{{{ model.content }}}
 			</div>
 		</script>
 		<script type="text/x-handlebars" data-template-name="inbox">
@@ -102,6 +103,7 @@
 			</article>
 			{{/ each }}
 			{{ outlet }}
+			{{ render "footer" }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="file">
 			<header class="meta">
@@ -127,6 +129,7 @@
 					<span><img src="{{ page.path }}" width="{{ page.width }}" height="{{ page.height }}" style="height: 94vmin"></span>
 					</p>
 					{{/ each }}
+					{{ render "footer" }}
 				</div>
 			</section>
 			{{ outlet }}
@@ -145,8 +148,26 @@
 			{{ outlet }}
 			</div>
 		</script>
-		<div id="app-wrapper">
+		<script type="text/x-handlebars" data-template-name="footer">
+			<footer>
+			<p>Lobbymail ist ein Projekt von <a href="https://opendatacity.de/">OpenDataCity</a>.</p>
+			</footer>
+		</script>
 
+		<div id="app-wrapper">
+			<div class="noscript">
+				<header class="main-header"> <h1>Lobbymail</h1> </header>
+				<main class="stage">
+					<div class="description">
+						<section class="text-view">
+							<p class="noscript">Bitte aktivieren Sie JavaScript, um diese Anwendung zu benutzen.</p>
+							<p>Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles.</p>
+							<p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.</p>
+							<p>Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation e li plu commun vocabules. Omnicos directe al desirabilite de un nov lingua franca: On refusa continuar payar custosi traductores. At solmen va esser necessi far uniform grammatica, pronunciation e plu sommun paroles. Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es. Li Europan lingues es membres del sam familie. Lor separat existentie es un myth. Por scientie, musica, sport etc, litot Europa usa li sam vocabular. Li lingues differe solmen in li grammatica, li pronunciation</p>
+						</section>
+					</div>
+				</main>
+			</div>
 		</div>
 
 		<!-- build:js /lobbymail/scripts/vendor.js -->

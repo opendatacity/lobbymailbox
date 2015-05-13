@@ -1,3 +1,7 @@
+$(function () {
+	$(document.body).removeClass('no-js');
+});
+
 $.getJSON('/lobbymail/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
@@ -277,6 +281,11 @@ App.ApplicationRoute = Ember.Route.extend({
 App.IndexRoute = Ember.Route.extend({
 	beforeModel: function () {
 		//this.transitionTo('inbox');
+	},
+	model: function () {
+		return {
+			content: Ember.String.htmlSafe($('.description').html())
+		}
 	}
 });
 
