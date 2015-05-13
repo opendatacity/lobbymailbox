@@ -7,7 +7,8 @@ footer {
 	border-top: 1px solid $base-line-color;
 	text-align: center;
 	img.odc-logo {
-		height: 1.5em;
+		// Needs !important to prevent zooming in documents view
+		height: 1.5em !important;
 		width: auto;
 	}
 }
