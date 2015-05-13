@@ -47,6 +47,16 @@
 	}
 }
 .message {
+	// Messages can be linked to with anchors, but due to the fixed header they
+	// would appear cut off at the top. To prevent that, we set a padding-top
+	// and negate that with a margin-top.
+	padding-top: 5em;
+	margin-top: -5em;
+	@media (min-width: $two-col-breakpoint) {
+		padding-top: 8em;
+		margin-top: -8em;
+	}
+
 	header {
 		color: $base-faded-color;
 		@media (min-width: $two-col-breakpoint) {
@@ -81,8 +91,12 @@
 		padding: .5em;
 	}
 	+ .message {
-		margin-top: 6rem;
-		border-top: 5px solid $base-line-color;
+		margin-top: 6em;
+		&:before {
+			content: "";
+			display: block;
+			border-top: 5px solid $base-line-color;
+		}
 	}
 	.attachments a {
 		@extend %file-type-icons;

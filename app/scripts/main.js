@@ -358,6 +358,7 @@ App.ThreadView = Ember.View.extend(App.Scrolling, {
 			var bottom = top + $article.innerHeight();
 			if (top < targetHeight && bottom > targetHeight) {
 				$article.click();
+				history.replaceState(null, null, '#'+article.id);
 				return false;
 			}
 		});
