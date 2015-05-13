@@ -403,6 +403,14 @@ function pluralHelper (n, args) {
 	return ((rules[n] !== undefined)? rules[n] : rules.default).replace(/%d/g, n);
 }
 Ember.Handlebars.helper('plural', pluralHelper);
+Ember.Handlebars.helper('hyperlinks', function (text) {
+	return new Ember.Handlebars.SafeString(
+		text.replace(/(https?:\/\/)?([a-z0-9\.-]+\.[a-z]{2,3})([^\s>]*)/gi, function (match, protocol) {
+			var url = protocol? match : 'http://' + match;
+			return '<a href="' + url + '" rel="nofollow">' + match + '</a>';
+		})
+	);
+});
 
 // Zoomable containers
 var defaultZoom = 0.94;

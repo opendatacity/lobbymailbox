@@ -90,7 +90,7 @@
 					{{/ if }}
 					<p class="date">{{ date message.date }}</p>
 				</header>
-				<pre class="body">{{ message.body }}</pre>
+				<pre class="body">{{ hyperlinks message.body }}</pre>
 				{{# if message.attachments }}
 				<dl class="attachments">
 					<dt>{{ plural message.attachmentCount 1="Anhang" default="Anhänge" }}</dt>
