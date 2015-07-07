@@ -70,6 +70,16 @@ App.Folder = Ember.Object.create({
 	},
 });
 App.File = Ember.Object.extend({
+	_date: null,
+	date: function (key, value) {
+		if (arguments.length > 1) {
+			// setter
+			this.set('_date', value);
+		}
+
+		if (this.get('message')) return this.get('message').get('date');
+		return this.get('_date');
+	}.property('_date', 'message'),
 	id: function () {
 		try {
 			return this.get('name').replace(/\.[^\/]*$/, '');
@@ -250,6 +260,7 @@ App.FIXTURES = {
 	}),
 };
 data.files.forEach(function (file) {
+	file.date = new Date();
 	App.File.create(file);
 });
 
@@ -290,7 +301,7 @@ App.InboxRoute = Ember.Route.extend({
 
 App.FilesRoute = Ember.Route.extend({
 	model: function () {
-		return App.Folder.find().sortBy('friendlyName');
+		return App.Folder.find().sortBy('date');
 	}
 });
 
@@ -384,12 +395,19 @@ function zerofill (n, len) {
 	}
 	return n;
 }
-Ember.Handlebars.helper('date', function (date) {
+Ember.Handlebars.helper('datetime', function (date) {
 	if (+date === 0) return new Ember.Handlebars.SafeString('Unbekanntes Datum');
 	date = new Date(date);
 	return new Ember.Handlebars.SafeString(
 		date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear() + ' ' +
 		zerofill(date.getHours(), 2) + ':' + zerofill(date.getMinutes(), 2)
+	);
+});
+Ember.Handlebars.helper('date', function (date) {
+	if (+date === 0) return new Ember.Handlebars.SafeString('Unbekanntes Datum');
+	date = new Date(date);
+	return new Ember.Handlebars.SafeString(
+		date.getDate() + '. ' + months[date.getMonth()] + ' ' + date.getFullYear()
 	);
 });
 Ember.Handlebars.helper('filesize', function (bytes) {

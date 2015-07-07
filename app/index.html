@@ -49,6 +49,7 @@
 			<ul>
 			{{# each file in model }}
 			{{# link-to "file" file.id tagName="li" classNameBindings="file.isAttachment" }}
+				<p class="filedate">{{# if file.date }}{{ date file.date }}{{ else }}{{ date file.message.date }}{{/ if }}</p>
 				<p class="filename file-{{ file.type }}">{{ file.friendlyName }}</p>
 			{{/ link-to }}
 			{{/ each }}
@@ -90,7 +91,7 @@
 						<dd><h2 class="subject">{{ message.subject }}</h2></dd>
 					</dl>
 					{{/ if }}
-					<p class="date">{{ date message.date }}</p>
+					<p class="date">{{ datetime message.date }}</p>
 				</header>
 				<pre class="body">{{ hyperlinks message.body }}</pre>
 				{{# if message.attachments }}
