@@ -21,6 +21,7 @@
 						<li>{{# link-to "files" }}Dokumente{{/ link-to }}</li>
 					</ul>
 				</nav>
+				<aside class="credits"><p>Ein Projekt von<br><a href="https://opendatacity.de/" title="OpenDataCity"><img class="odc-logo" alt="OpenDataCity" src="//apps.opendatacity.de/logo/bbb.svg"></a></p></aside>
 			</header>
 			<div class="stage">
 				{{ outlet }}
@@ -103,7 +104,6 @@
 			</article>
 			{{/ each }}
 			{{ outlet }}
-			{{ render "footer" }}
 		</script>
 		<script type="text/x-handlebars" data-template-name="file">
 			<header class="meta">
@@ -129,7 +129,6 @@
 					<span><img src="{{ page.path }}" width="{{ page.width }}" height="{{ page.height }}" style="height: 94vmin"></span>
 					</p>
 					{{/ each }}
-					{{ render "footer" }}
 				</div>
 			</section>
 			{{ outlet }}
@@ -147,12 +146,6 @@
 			{{ render "file" model }}
 			{{ outlet }}
 			</div>
-		</script>
-		<script type="text/x-handlebars" data-template-name="footer">
-			<footer>
-			<p><img class="odc-logo" src="//apps.opendatacity.de/logo/bbb.svg"></p>
-			<p>Lobbymail ist ein Projekt von <a href="https://opendatacity.de/">OpenDataCity</a>.</p>
-			</footer>
 		</script>
 
 		<div id="app-wrapper">

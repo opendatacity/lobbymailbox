@@ -16,7 +16,7 @@
 .main-header {
 	position: fixed;
 	z-index: 3;
-	width: 100%;
+	width: calc(100% - 2 * #{$view-padding});
 	max-width: 70rem - 2 * $view-padding;
 	@extend %chrome-position-bug-workaround;
 }

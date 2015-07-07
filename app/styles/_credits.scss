@@ -1,0 +1,17 @@
+.credits {
+	@extend %all-small-caps;
+	position: absolute;
+	z-index: 5;
+	right: 0;
+	bottom: 0;
+
+	p {
+		font-size: .9em;
+		color: $base-faded-color;
+		text-align: right;
+	}
+
+	img {
+		height: 1.5em;
+	}
+}
