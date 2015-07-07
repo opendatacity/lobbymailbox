@@ -260,7 +260,7 @@ App.FIXTURES = {
 	}),
 };
 data.files.forEach(function (file) {
-	if (file.date) file.date = new Date(file.date);
+	file.date = new Date(file.date);
 	App.File.create(file);
 });
 
