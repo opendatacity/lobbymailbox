@@ -1,7 +1,3 @@
-$(function () {
-	$(document.body).removeClass('no-js');
-});
-
 $.getJSON('/lobbymail/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
