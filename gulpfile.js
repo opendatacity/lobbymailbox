@@ -58,7 +58,7 @@ gulp.task('html', ['styles', 'scripts'], function () {
 
 gulp.task('fonts', function () {
 	return gulp.src('app/fonts/*')
-		.pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+		.pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
 		.pipe($.flatten())
 		.pipe(gulp.dest('dist/lobbymail/fonts/'))
 		.pipe($.size());
