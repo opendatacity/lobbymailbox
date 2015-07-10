@@ -119,7 +119,7 @@ App.File = Ember.Object.extend({
 			var path = me.get('path').split('/');
 			var basename = path.pop();
 			path.push('previews');
-			path.push(basename.replace(/\..*?$/, '-' + (i+1) + '.png'));
+			path.push(basename.replace(/\.[a-z]*?$/i, '-' + (i+1) + '.png'));
 			page.path = path.join('/');
 			page.width = page.size[0];
 			page.height = page.size[1];
