@@ -1,8 +1,8 @@
-$.getJSON('/lobbymail/data/data.json').then(function (data) {
+$.getJSON('/data/data.json').then(function (data) {
 'use strict';
 /* global Ember, FastClick */
 
-var rootURL = '/lobbymail/';
+var rootURL = '/';
 
 function debounce(func, wait, immediate) {
 	var timeout;

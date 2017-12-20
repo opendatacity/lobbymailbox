@@ -1,5 +1,4 @@
 'use strict';
-// generated on 2015-04-15 using generator-gulp-webapp 0.1.0
 
 var fs = require('fs');
 var path = require('path');
@@ -48,7 +47,7 @@ gulp.task('html', ['styles', 'scripts'], function () {
 		.pipe($.useref.restore())
 		.pipe($.useref())
 		.pipe(htmlFilter)
-		.pipe(gulp.dest('dist/lobbymail/'))
+		.pipe(gulp.dest('dist/'))
 		.pipe(htmlFilter.restore())
 		.pipe(notHTMLFilter)
 		.pipe(gulp.dest('dist/'))
@@ -60,17 +59,18 @@ gulp.task('fonts', function () {
 	return gulp.src('app/fonts/*')
 		.pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
 		.pipe($.flatten())
-		.pipe(gulp.dest('dist/lobbymail/fonts/'))
+		.pipe(gulp.dest('dist/fonts/'))
 		.pipe($.size());
 });
 
 gulp.task('data', ['html'], function () {
-	return fs.symlink(path.resolve(__dirname, 'app/data/'), path.resolve(__dirname, 'dist/lobbymail/data/'));
+	return gulp.src('app/data/*')
+		.pipe(gulp.dest('dist/data/'));
 });
 
 gulp.task('extras', function () {
 	return gulp.src(['app/*.*', '!app/*.html'], { dot: true })
-		.pipe(gulp.dest('dist/lobbymail/'));
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('clean', function () {

@@ -1,0 +1,55 @@
+
+
+
+
+
+
+Betreff          : BITKOM: Positionspapier zur Datenschutz-Grundverordnung
+Sender           : Johannes.Stawowy@cducsu.de
+Envelope Sender  : Johannes.Stawowy@cducsu.de
+Sender Name      : Stawowy, Dr. Johannes
+Sender Domain    : cducsu.de
+Message ID       : <2A3D48C6E771194ABD13C140F75DC0A75D119065@mail1.cducsu.local>
+Mail Size        : 334858
+Time             : 31.07.2013 11:57:35 (Mi 31 Jul 2013 11:57:35 CEST)
+Julia Commands   : Keine Kommandos verwendet
+
+Die Nachricht war signiert.
+
+Allgemeine Informationen zur Signatur:
+
+UNGÜLTIGE SIGNATUR
+Diese eingehende E-Mail-Nachricht wurde automatisiert auf die Gültigkeit der
+enthaltenen digitalen Signatur geprüft.
+
+Die Signatur ist NICHT gültig. Die Vertrauenswürdigkeit der Nachricht kann
+daher nicht gewährleistet werden, es ist jedoch auch möglich, dass die
+Vertrauensstellung des Zertifikats noch nicht festegelegt wurde.
+
+Sofern Sie mit diesem Kommunikationspartner regelmäßig kommunizieren,
+kann das verwendete Zertifikat auf Vertrauenswürdigkeit geprüft und
+ggf. entsprechend hinterlegt werden.
+
+Hierfür sowie für weitere Fragen zu diesem Verfahren wenden Sie sich bitte an den Benutzerservice (1414).
+während der Übertragung nicht verändert wurde und tatsächlich von dem in der
+E-Mail-Adresse angegebenen Absender stammt.
+
+Für weitere Fragen zu diesem Verfahren wenden Sie sich bitte an den Benutzerservice (1414).
+Der Nachrichtenumschlag war S/MIME signiert.
+
+S/MIME-Engine Antworten:
+Envelope Signer                  : /C=DE/O=Deutscher Bundestag/OU=Fraktionen/CN=Johannes Stawowy/emailAddress=johannes.stawowy@cducsu.de
+
+Info Signatur                    : Signaturzeitpunkt: Jul 31 09:25:46 2013 GMT
+
+MD Signatur                      : sha1 (1.3.14.3.2.26)
+Signature Engine Response        : 
+Verify Engine Response           : 
+unable to get local issuer certificate (20) (20) 
+
+Qualified Verify Engine Response : 
+
+
+
+
+
