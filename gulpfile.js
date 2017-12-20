@@ -47,7 +47,7 @@ gulp.task('html', ['styles', 'scripts'], function () {
 		.pipe($.useref.restore())
 		.pipe($.useref())
 		.pipe(htmlFilter)
-		.pipe(gulp.dest('dist/'))
+		.pipe(gulp.dest('dist/lobbymailbox/'))
 		.pipe(htmlFilter.restore())
 		.pipe(notHTMLFilter)
 		.pipe(gulp.dest('dist/'))
@@ -59,18 +59,18 @@ gulp.task('fonts', function () {
 	return gulp.src('app/fonts/*')
 		.pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
 		.pipe($.flatten())
-		.pipe(gulp.dest('dist/fonts/'))
+		.pipe(gulp.dest('dist/lobbymailbox/fonts/'))
 		.pipe($.size());
 });
 
 gulp.task('data', ['html'], function () {
 	return gulp.src('app/data/**')
-		.pipe(gulp.dest('dist/data/'));
+		.pipe(gulp.dest('dist/lobbymailbox/data/'));
 });
 
 gulp.task('extras', function () {
 	return gulp.src(['app/*.*', '!app/*.html'], { dot: true })
-		.pipe(gulp.dest('dist/'));
+		.pipe(gulp.dest('dist/lobbymailbox/'));
 });
 
 gulp.task('clean', function () {
